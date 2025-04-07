@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "359780271906",
+    "project_id": "c-planner-db",
+    "storage_bucket": "c-planner-db.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:359780271906:android:301479c4689a9c824b077b",
+        "android_client_info": {
+          "package_name": "app.c_planner"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMPkHWxTpLIZwRTW9CWxpR77FVGtF-hFE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
