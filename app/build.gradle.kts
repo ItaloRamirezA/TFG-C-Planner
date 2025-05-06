@@ -1,19 +1,15 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-
-    // Para firebase
-    //id("com.android.application")
-    id("com.google.gms.google-services")
 }
 
 android {
-    namespace = "app.c_planner"
+    namespace = "com.app.cplanner"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "app.c_planner"
-        minSdk = 24
+        applicationId = "com.app.cplanner"
+        minSdk = 25
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -41,7 +37,7 @@ android {
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
+    //implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
@@ -50,11 +46,6 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    // Para firebase
-    implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
-    implementation("com.google.firebase:firebase-analytics")
-
-    // Para firebase Auth
-    implementation("com.google.firebase:firebase-auth")
-
+    // SPLASH SCREEN
+    implementation("androidx.core:core-splashscreen:1.0.0")
 }

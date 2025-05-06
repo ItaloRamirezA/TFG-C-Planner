@@ -19,5 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "C-Planner"
+rootProject.name = "CPlanner"
 include(":app")
+ 

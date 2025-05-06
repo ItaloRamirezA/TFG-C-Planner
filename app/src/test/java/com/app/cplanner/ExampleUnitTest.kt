@@ -1,4 +1,4 @@
-package app.c_planner
+package com.app.cplanner
 
 import org.junit.Test
 

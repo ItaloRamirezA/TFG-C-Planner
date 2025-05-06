@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Blanco y negro -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Blancos/Grises -->
+    <color name="blancoHueso">#F2F0EB</color>
+    <color name="blancoGrisáceo">#e8f1fa</color>
+    <color name="grisOscuro">#1D1D1B</color>
+    <color name="celesteBlanquesino">#bdd0e8</color>
+
+    <!-- Azules -->
+    <color name="azulOscuro">#1e375a</color>
+    <color name="azulLogoClaro">#0061FD</color>
+    <color name="azulLogoOscuro">#02358F</color>
+
+    <!-- Complementarios -->
+    <color name="celeste">#00abe4</color>
+    <color name="rojoCoral">#ed5267</color>
+
 </resources>
