@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -45,6 +46,12 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // FIREBASE
+    //implementation(libs.firebase.auth)
+    //implementation(libs.androidx.credentials)
+    //implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid)
 
     // SPLASH SCREEN
     implementation("androidx.core:core-splashscreen:1.0.0")
