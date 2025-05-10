@@ -53,3 +53,4 @@ dependencies {
     implementation ("com.google.firebase:firebase-auth:21.0.1")
     implementation ("com.google.android.gms:play-services-safetynet:18.0.0")
 }
+

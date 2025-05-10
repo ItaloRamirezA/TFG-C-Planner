@@ -1,32 +1,13 @@
 {
   "project_info": {
-    "project_number": "359780271906",
-    "project_id": "c-planner-db",
-    "storage_bucket": "c-planner-db.firebasestorage.app"
+    "project_number": "259227277182",
+    "project_id": "c-planner-app",
+    "storage_bucket": "c-planner-app.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:359780271906:android:301479c4689a9c824b077b",
-        "android_client_info": {
-          "package_name": "app.c_planner"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBMPkHWxTpLIZwRTW9CWxpR77FVGtF-hFE"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:359780271906:android:d3d77dcc38fae4f44b077b",
+        "mobilesdk_app_id": "1:259227277182:android:48a41cd9cf87b80c09c52f",
         "android_client_info": {
           "package_name": "com.app.cplanner"
         }
@@ -34,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBMPkHWxTpLIZwRTW9CWxpR77FVGtF-hFE"
+          "current_key": "AIzaSyD-7xIPam7c-ZlacjyCU7-EQ0tkjEUFw6k"
         }
       ],
       "services": {

@@ -30,7 +30,7 @@ class SignUpActivity : BaseActivity() {
     }
 
     fun botonSignUp(view: View) {
-        
+        registerUser()
     }
 
     /**
