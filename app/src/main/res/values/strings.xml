@@ -1,6 +1,9 @@
 <resources>
     <!-- GENERAL -->
     <string name="app_name">C-Planner</string>
+    <string name="imagen">Imagen</string>
+    <string name="email">Email</string>
+    <string name="contraseña">Contraseña</string>
 
     <!-- GENERAL -->
 

@@ -1,16 +1,18 @@
 <!-- Tema Claro -->
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Tema base claro -->
-    <style name="Base.Theme.C_Planner" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Paleta de Material 3 basada en tus colores -->
-        <item name="colorPrimary">@color/azulLogoClaro</item>        <!-- Azul brillante -->
+    <!-- ********************************************* -->
+    <!-- ************ TEMA PRINCIPAL CLARO *********** -->
+    <!-- ********************************************* -->
+    <style name="Theme.C_Planner" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
+        <item name="colorPrimary">@color/azulLogoOscuro</item>        <!-- Azul claro -->
         <item name="colorOnPrimary">@color/white</item>              <!-- Texto sobre primary -->
 
         <item name="colorSecondary">@color/celeste</item>            <!-- Complementario -->
         <item name="colorOnSecondary">@color/white</item>
 
-        <item name="backgroundColor">@color/blancoHueso</item>       <!-- Fondo general -->
+        <item name="backgroundColor">@color/white</item>       <!-- Fondo general -->
         <item name="colorOnBackground">@color/grisOscuro</item>
 
         <item name="colorSurface">@color/blancoGrisáceo</item>       <!-- Superficies como cards -->
@@ -19,17 +21,11 @@
         <item name="colorError">@color/rojoCoral</item>               <!-- Estados de error -->
         <item name="colorOnError">@color/white</item>
 
+        <item name="materialButtonStyle">@color/azulLogoClaro</item>    <!-- Botón primario -->
+
         <!-- Opcionales: statusBar y navigationBar -->
         <item name="android:statusBarColor">@color/azulLogoOscuro</item>
         <item name="android:navigationBarColor">@color/azulLogoClaro</item>
     </style>
-
-    <!-- Tema del SplashScreen claro -->
-    <style name="Theme.SplashScreen" parent="Base.Theme.C_Planner">
-        <item name="windowSplashScreenBackground">@color/blancoHueso</item>
-            <!-- TODO agregar la animacion abajo -->
-        <item name="windowSplashScreenAnimatedIcon">@mipmap/logo_cplanner</item>
-        <item name="postSplashScreenTheme">@style/Base.Theme.C_Planner</item>
-    </style>
-
+    <!-- ********************************************* -->
 </resources>

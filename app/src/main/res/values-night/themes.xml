@@ -1,35 +1,31 @@
 <!-- Tema Oscuro -->
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Tema base oscuro -->
-    <style name="Theme.C_Planner" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Paleta de Material 3 adaptada al modo oscuro -->
-        <item name="colorPrimary">@color/azulLogoOscuro</item>      <!-- Azul intenso -->
+    <!-- ********************************************* -->
+    <!-- *********** TEMA PRINCIPAL OSCURO *********** -->
+    <!-- ********************************************* -->
+    <style name="Theme.C_Planner" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
+        <item name="colorPrimary">@color/azulLogoClaro</item>      <!-- Azul intenso -->
         <item name="colorOnPrimary">@color/white</item>
 
         <item name="colorSecondary">@color/celesteBlanquesino</item><!-- Tono claro de celeste -->
         <item name="colorOnSecondary">@color/grisOscuro</item>
 
         <item name="backgroundColor">@color/grisOscuro</item>        <!-- Fondo oscuro -->
-        <item name="colorOnBackground">@color/blancoHueso</item>
+        <item name="colorOnBackground">@color/white</item>
 
         <item name="colorSurface">@color/azulOscuro</item>           <!-- Tarjetas o superficies -->
         <item name="colorOnSurface">@color/blancoHueso</item>
 
-        <item name="colorError">@color/rojoCoral</item>
+        <item name="colorError">@color/rojoCoral</item>                <!-- Estados de error -->
         <item name="colorOnError">@color/white</item>
+
+        <item name="materialButtonStyle">@color/azulLogoClaro</item>    <!-- Botón primario -->
 
         <!-- Opcionales: statusBar y navigationBar -->
         <item name="android:statusBarColor">@color/azulLogoOscuro</item>
         <item name="android:navigationBarColor">@color/azulOscuro</item>
     </style>
-
-    <!-- Tema del SplashScreen oscuro -->
-    <style name="Theme.SplashScreen" parent="Base.Theme.C_Planner">
-        <item name="windowSplashScreenBackground">@color/grisOscuro</item>
-            <!-- TODO agregar la animacion abajo -->
-        <item name="windowSplashScreenAnimatedIcon">@mipmap/logo_cplanner</item>
-        <item name="postSplashScreenTheme">@style/Base.Theme.C_Planner</item>
-    </style>
-
+    <!-- ********************************************* -->
 </resources>

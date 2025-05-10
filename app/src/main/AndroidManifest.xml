@@ -13,8 +13,22 @@
         android:theme="@style/Theme.C_Planner"
         tools:targetApi="31">
         <activity
+            android:name=".BaseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".session.ForgetPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".session.SignUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".session.SignInActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
-            android:theme="@style/Theme.SplashScreen"
+            android:exported="false" />
+        <activity
+            android:name=".GetStartedActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
