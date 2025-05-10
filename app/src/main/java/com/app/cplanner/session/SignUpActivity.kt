@@ -41,7 +41,7 @@ class SignUpActivity : BaseActivity() {
         val name = findViewById<EditText>(R.id.etSignUpName).text.toString()
         val email = findViewById<EditText>(R.id.etSignUpEmail).text.toString()
         val password = findViewById<EditText>(R.id.etSignUpPassword).text.toString()
-        if (validateForm(name, email, password)) {
+        if (validateFormSignUp(name, email, password)) {
             showProgressBar()
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
@@ -63,7 +63,7 @@ class SignUpActivity : BaseActivity() {
     /**
      * Método para validar el formulario de registro de usuario.
      */
-    private fun validateForm(name: String, email: String, password: String): Boolean {
+    private fun validateFormSignUp(name: String, email: String, password: String): Boolean {
         return when {
             name.isEmpty() -> {
                 showToast(this, "El nombre no puede estar vacío")

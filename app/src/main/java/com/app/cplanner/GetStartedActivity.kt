@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.app.cplanner.session.SignInActivity
+import com.google.firebase.auth.FirebaseAuth
 
 class GetStartedActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,6 +20,14 @@ class GetStartedActivity : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+
+
+
+        val auth = FirebaseAuth.getInstance()
+        if (auth.currentUser!= null) {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
         }
     }
 

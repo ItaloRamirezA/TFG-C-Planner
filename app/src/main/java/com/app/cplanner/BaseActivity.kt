@@ -23,6 +23,14 @@ open class BaseActivity : AppCompatActivity() {
         }
     }
 
+
+    override fun onDestroy() {
+        if (::progbar.isInitialized && progbar.isShowing) {
+            progbar.dismiss()
+        }
+        super.onDestroy()
+    }
+
     /**
      * Método para mostrar el ProgressBar.
      */
@@ -37,10 +45,11 @@ open class BaseActivity : AppCompatActivity() {
      * Método para ocultar el ProgressBar.
      */
     fun hideProgressBar() {
-        if (progbar.isShowing) {
-            progbar.hide()
+        if (::progbar.isInitialized && progbar.isShowing) {
+            progbar.dismiss()
         }
     }
+
 
     /**
      * Método para mostrar un Toast.
