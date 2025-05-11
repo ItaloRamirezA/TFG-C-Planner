@@ -2,6 +2,8 @@ package com.app.cplanner.session
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -43,7 +45,7 @@ class ForgetPasswordActivity : BaseActivity() {
      * Método para restablecer la contraseña.
      */
     private fun resetPassword() {
-        val email = findViewById<android.widget.EditText>(R.id.tilEmailForgetPassword).text.toString()
+        val email = findViewById<android.widget.EditText>(R.id.etForgetPasswordEmail).text.toString()
         if (validateFormForgetPassword(email)) {
             showProgressBar()
             auth.sendPasswordResetEmail(email)
@@ -52,8 +54,8 @@ class ForgetPasswordActivity : BaseActivity() {
                         // Envío exitoso
                         hideProgressBar()
                         findViewById<android.widget.EditText>(R.id.tilEmailForgetPassword)?.visibility = View.GONE
-                        findViewById<android.widget.EditText>(R.id.tvSubmitMsg)?.visibility = View.VISIBLE
-                        findViewById<android.widget.EditText>(R.id.btnForgotPasswordSubmit)?.visibility = View.GONE
+                        findViewById<TextView>(R.id.tvSubmitMsg).visibility = View.VISIBLE
+                        findViewById<Button>(R.id.btnForgotPasswordSubmit).visibility = View.GONE
                         showToast(this, "Correo de restablecimiento enviado a $email")
                         finish()
                     } else {
