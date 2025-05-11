@@ -12,7 +12,20 @@
           "package_name": "com.app.cplanner"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "259227277182-05pgg53adsqp7n4ppa5uclqlsnud9em5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.cplanner",
+            "certificate_hash": "8f969871bd86d508636def918c462d197c748de2"
+          }
+        },
+        {
+          "client_id": "259227277182-c6e9g8ji9ranr1oi1n1dgqprvnd1tj0u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyD-7xIPam7c-ZlacjyCU7-EQ0tkjEUFw6k"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "259227277182-c6e9g8ji9ranr1oi1n1dgqprvnd1tj0u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
