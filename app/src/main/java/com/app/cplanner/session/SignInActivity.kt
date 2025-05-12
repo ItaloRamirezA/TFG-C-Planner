@@ -20,6 +20,10 @@
     import com.google.firebase.auth.FirebaseAuth
     import com.google.firebase.auth.GoogleAuthProvider
 
+    /**
+     * Clase para el inicio de sesión de usuarios.
+     * @author Italo
+     */
     class SignInActivity : BaseActivity() {
         private lateinit var auth: FirebaseAuth
 
@@ -63,11 +67,19 @@
          * Método para iniciar sesión con Google.
          */
         private fun signInWithGoogle() {
-            val signInIntent = googleSignInClient.signInIntent
-            launcher.launch(signInIntent)
+            // Cerrar la sesión anterior para forzar selector de cuenta
+            googleSignInClient.signOut()
+                .addOnCompleteListener(this) {
+                    // Lanzar el selector de cuentas
+                    val signInIntent = googleSignInClient.signInIntent
+                    launcher.launch(signInIntent)
+                }
         }
 
-        private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        /**
+         * Método para registrar el resultado de la actividad de inicio de sesión.
+         */
+        private val launcher = registerForActivityResult( ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
                 val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
                 handleSignInResult(task)
@@ -88,6 +100,9 @@
             }
         }
 
+        /**
+         * Método para actualizar la interfaz de usuario después de iniciar sesión.
+         */
         private fun updateUI(account: GoogleSignInAccount) {
             showProgressBar()
             val credential = GoogleAuthProvider.getCredential(account.idToken, null)

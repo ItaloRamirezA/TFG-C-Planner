@@ -7,6 +7,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.app.cplanner.activities.CreateActivityActivity
+import com.app.cplanner.activities.UserProfileActivity
 import com.google.firebase.auth.FirebaseAuth
 
 
@@ -31,6 +33,18 @@ class MainActivity : BaseActivity() {
         } else {
             showToast(this, "No hay sesión activa")
         }
+    }
+
+    fun createActivityBoton(view: View) {
+        val intent = Intent(this, CreateActivityActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    fun goToProfile(view: View) {
+        val intent = Intent(this, UserProfileActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
 

@@ -6,6 +6,8 @@
     <!-- ********************************************* -->
     <style name="Theme.C_Planner" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
+        <item name="fontFamily">@font/sf_display_regular</item>
+
         <item name="colorPrimary">@color/azulLogoOscuro</item>        <!-- Azul claro -->
         <item name="colorOnPrimary">@color/white</item>              <!-- Texto sobre primary -->
 
