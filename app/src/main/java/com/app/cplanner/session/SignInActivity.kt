@@ -19,6 +19,8 @@
     import com.google.android.gms.tasks.Task
     import com.google.firebase.auth.FirebaseAuth
     import com.google.firebase.auth.GoogleAuthProvider
+    import com.app.cplanner.model.entity.Usuario
+    import com.google.firebase.firestore.FirebaseFirestore
 
     /**
      * Clase para el inicio de sesión de usuarios.
@@ -105,19 +107,43 @@
          */
         private fun updateUI(account: GoogleSignInAccount) {
             showProgressBar()
+            // 1) Obtener credenciales Firebase
             val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-            auth.signInWithCredential(credential).addOnCompleteListener(this) {
-                    if (it.isSuccessful) {
-                        // Inicio de sesión exitoso
-                        hideProgressBar()
-                        showToast(this, "Bienvenido de nuevo")
-                        startActivity(Intent(this, MainActivity::class.java))
-                        this.finish()
-                    } else {
-                        // Inicio de sesión fallido
-                        hideProgressBar()
-                        showToast(this, "Error al iniciar sesión: ${it.exception?.message}")
+            auth.signInWithCredential(credential)
+                .addOnCompleteListener(this) { authTask ->
+                    hideProgressBar()
+                    if (!authTask.isSuccessful) {
+                        showToast(this, "Error al iniciar sesión: ${authTask.exception?.message}")
+                        return@addOnCompleteListener
                     }
+                    // 2) Usuario autenticado
+                    val user = auth.currentUser!!
+                    val email = user.email.orEmpty()
+                    val nombre = email.substringBefore("@")          // antes de la '@'
+                    val fotoUrl = user.photoUrl?.toString().orEmpty()
+
+                    // 3) Construir objeto Usuario con contraseña vacía
+                    val perfil = Usuario(
+                        id         = user.uid,
+                        nombre     = nombre,
+                        email      = email,
+                        contrasena = "",          // cadena vacía
+                        fotoUrl    = fotoUrl
+                    )
+
+                    // 4) Guardar en Firestore
+                    FirebaseFirestore.getInstance()
+                        .collection("usuarios")
+                        .document(user.uid)
+                        .set(perfil.toMap())
+                        .addOnSuccessListener {
+                            // Navegar al main tras crear el perfil
+                            startActivity(Intent(this, MainActivity::class.java))
+                            finish()
+                        }
+                        .addOnFailureListener { e ->
+                            showToast(this, "Error guardando perfil: ${e.message}")
+                        }
                 }
         }
 

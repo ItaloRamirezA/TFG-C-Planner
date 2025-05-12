@@ -9,7 +9,7 @@
     >
 
     <!-- Foto de perfil circular -->
-    <ImageView
+    <ImageButton
         android:id="@+id/ivEditPhoto"
         android:layout_width="120dp"
         android:layout_height="120dp"

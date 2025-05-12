@@ -15,32 +15,36 @@ import kotlinx.coroutines.launch
 
 /**
  * ViewModel para manejar la lógica de negocio del usuario.
- * Contiene métodos para cargar, actualizar y eliminar el perfil del usuario.
+ * Contiene métodos para cargar, refrescar y actualizar el perfil del usuario.
  */
 class UsuarioViewModel : ViewModel() {
-    private val auth = FirebaseAuth.getInstance()
-    private val db   = FirebaseFirestore.getInstance()
+    private val auth    = FirebaseAuth.getInstance()
+    private val db      = FirebaseFirestore.getInstance()
     private val storage = FirebaseStorage.getInstance().reference
 
     private val _usuario = MutableLiveData<Usuario?>()
     val usuario: LiveData<Usuario?> = _usuario
 
     init {
+        // Carga inicial
         cargarUsuario()
     }
 
     /**
-     * Carga el usuario actual desde Firestore y lo publica en el LiveData.
-     * Se llama al iniciar la actividad o fragmento.
+     * Public: carga o recarga el usuario actual desde Firestore.
+     * Llamar en onCreate y también en onResume si se desea refrescar cada vez.
      */
-    private fun cargarUsuario() {
+    fun cargarUsuario() {
         val uid = auth.currentUser?.uid ?: return
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val snap = db.collection("usuarios").document(uid).get().await()
+                val snap = db.collection("usuarios")
+                    .document(uid)
+                    .get()
+                    .await()
                 val u = snap.toObject(Usuario::class.java)
                 _usuario.postValue(u)
-            } catch(e: Exception) {
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
@@ -53,19 +57,24 @@ class UsuarioViewModel : ViewModel() {
         val uid = auth.currentUser?.uid ?: return
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                // Si el email cambia, actualízalo también en FirebaseAuth
+                // Si cambió el email, actualizarlo también en FirebaseAuth
                 if (email != auth.currentUser?.email) {
                     auth.currentUser?.updateEmail(email)?.await()
                 }
                 // Update en Firestore
-                db.collection("usuarios").document(uid)
-                    .update(mapOf("nombre" to nombre, "email" to email))
+                db.collection("usuarios")
+                    .document(uid)
+                    .update(mapOf(
+                        "nombre" to nombre,
+                        "email"  to email
+                    ))
                     .await()
 
-                // Refrescar LiveData local
-                val updated = _usuario.value?.copy(nombre = nombre, email = email)
-                _usuario.postValue(updated)
-            } catch(e: Exception) {
+                // Refrescar dato local
+                val actualizado = _usuario.value
+                    ?.copy(nombre = nombre, email = email)
+                _usuario.postValue(actualizado)
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
@@ -75,7 +84,8 @@ class UsuarioViewModel : ViewModel() {
      * Cambia la contraseña del usuario en FirebaseAuth.
      */
     fun changePassword(nueva: String) {
-        auth.currentUser?.updatePassword(nueva)
+        auth.currentUser
+            ?.updatePassword(nueva)
             ?.addOnFailureListener { it.printStackTrace() }
     }
 
@@ -90,13 +100,16 @@ class UsuarioViewModel : ViewModel() {
                 ref.putFile(photoUri).await()
                 val url = ref.downloadUrl.await().toString()
 
-                db.collection("usuarios").document(uid)
+                db.collection("usuarios")
+                    .document(uid)
                     .update("fotoUrl", url)
                     .await()
 
-                val updated = _usuario.value?.copy(fotoUrl = url)
-                _usuario.postValue(updated)
-            } catch(e: Exception) {
+                // Refrescar dato local
+                val actualizado = _usuario.value
+                    ?.copy(fotoUrl = url)
+                _usuario.postValue(actualizado)
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }

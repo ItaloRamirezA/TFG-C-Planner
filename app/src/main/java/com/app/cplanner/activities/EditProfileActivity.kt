@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -21,8 +22,8 @@ class EditProfileActivity : AppCompatActivity() {
 
     private lateinit var etNombre: EditText
     private lateinit var etEmail: EditText
-    private lateinit var imgFoto: ImageView
-    private lateinit var btnCambiarFoto: Button
+    private lateinit var imgFoto: ImageButton
+    private lateinit var btnCambiarFoto: ImageButton
     private lateinit var btnGuardar: Button
 
     private var uriFoto: Uri? = null

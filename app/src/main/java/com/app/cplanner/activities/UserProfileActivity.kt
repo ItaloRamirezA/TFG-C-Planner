@@ -27,6 +27,11 @@ class UserProfileActivity : AppCompatActivity() {
     private lateinit var tvEmail: TextView
     private lateinit var btnEditar: Button
 
+    override fun onResume() {
+        super.onResume()
+        // Recarga al volver a primer plano para que siempre traiga la versión más reciente :contentReference[oaicite:1]{index=1}
+        usuarioViewModel.cargarUsuario()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
