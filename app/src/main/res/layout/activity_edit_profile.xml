@@ -18,7 +18,8 @@
         android:background="@color/celeste"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:onClick="editPPButton"/>
 
     <!-- Botón para cambiar foto -->
     <ImageButton
@@ -29,7 +30,8 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="change photo"
         app:layout_constraintBottom_toBottomOf="@id/ivEditPhoto"
-        app:layout_constraintEnd_toEndOf="@id/ivEditPhoto"/>
+        app:layout_constraintEnd_toEndOf="@id/ivEditPhoto"
+        android:onClick="editPPButton"/>
 
     <!-- Nombre -->
     <com.google.android.material.textfield.TextInputLayout
@@ -46,7 +48,7 @@
             android:id="@+id/etEditName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="nombre"
+            android:hint="Nombre"
             android:inputType="textPersonName"/>
     </com.google.android.material.textfield.TextInputLayout>
 

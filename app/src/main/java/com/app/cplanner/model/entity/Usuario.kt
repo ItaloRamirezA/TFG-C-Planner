@@ -20,7 +20,7 @@ data class Usuario(
 
     companion object {
         /**
-         * Crea un Usuario a partir de un Map<String,Any?>, p. ej. DocumentSnapshot.data
+         * Crea un Usuario a partir de un Map<String,Any?>
          */
         fun fromMap(map: Map<String, Any?>): Usuario {
             return Usuario(

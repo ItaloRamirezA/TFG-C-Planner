@@ -13,6 +13,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel para manejar la lógica de negocio del usuario.
+ * Contiene métodos para cargar, actualizar y eliminar el perfil del usuario.
+ */
 class UsuarioViewModel : ViewModel() {
     private val auth = FirebaseAuth.getInstance()
     private val db   = FirebaseFirestore.getInstance()
@@ -25,7 +29,10 @@ class UsuarioViewModel : ViewModel() {
         cargarUsuario()
     }
 
-    /** 1) Carga el documento /usuarios/{uid} y lo publica. */
+    /**
+     * Carga el usuario actual desde Firestore y lo publica en el LiveData.
+     * Se llama al iniciar la actividad o fragmento.
+     */
     private fun cargarUsuario() {
         val uid = auth.currentUser?.uid ?: return
         viewModelScope.launch(Dispatchers.IO) {
@@ -39,7 +46,9 @@ class UsuarioViewModel : ViewModel() {
         }
     }
 
-    /** 2) Actualiza nombre y/o email en Firestore (y en Auth si cambias email). */
+    /**
+     * Actualiza el nombre y email del usuario en Firestore y FirebaseAuth.
+     */
     fun updateProfile(nombre: String, email: String) {
         val uid = auth.currentUser?.uid ?: return
         viewModelScope.launch(Dispatchers.IO) {
@@ -62,13 +71,17 @@ class UsuarioViewModel : ViewModel() {
         }
     }
 
-    /** 3) Cambia la contraseña en FirebaseAuth. */
+    /**
+     * Cambia la contraseña del usuario en FirebaseAuth.
+     */
     fun changePassword(nueva: String) {
         auth.currentUser?.updatePassword(nueva)
             ?.addOnFailureListener { it.printStackTrace() }
     }
 
-    /** 4) Sube foto al Storage y guarda la URL en Firestore + LiveData */
+    /**
+     * Actualiza la foto de perfil del usuario en Firestore y Firebase Storage.
+     */
     fun updatePhoto(photoUri: Uri) {
         val uid = auth.currentUser?.uid ?: return
         viewModelScope.launch(Dispatchers.IO) {

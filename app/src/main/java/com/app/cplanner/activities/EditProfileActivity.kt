@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -27,6 +28,7 @@ class EditProfileActivity : AppCompatActivity() {
     private var uriFoto: Uri? = null
 
     companion object {
+        // Se usa para lanzar la galería y tambien para saber que el resultado viene de la galería.
         private const val PICK_IMAGE = 101
     }
 
@@ -35,30 +37,30 @@ class EditProfileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_edit_profile)
 
         // 1) Vinculamos las vistas
-        etNombre      = findViewById(R.id.etEditName)
-        etEmail       = findViewById(R.id.etEditEmail)
-        //imgFoto       = findViewById(R.id.imgFoto)
-        btnCambiarFoto= findViewById(R.id.btnPickPhoto)
-        btnGuardar    = findViewById(R.id.btnSaveProfile)
+        etNombre = findViewById(R.id.etEditName)
+        etEmail = findViewById(R.id.etEditEmail)
+        imgFoto = findViewById(R.id.ivEditPhoto)
+        btnCambiarFoto = findViewById(R.id.btnPickPhoto)
+        btnGuardar = findViewById(R.id.btnSaveProfile)
 
         // 2) Observamos el LiveData<Usuario> para poblar UI
-//        usuarioViewModel.usuario.observe(this) { usuario ->
-//            usuario?.let {
-//                etNombre.setText(it.nombre)
-//                etEmail.setText(it.email)
-//
-//                // Carga de la foto usando Glide
-//                if (it.fotoUrl.isNotBlank()) {
-//                    Glide.with(this)
-//                        .load(it.fotoUrl)
-//                        .placeholder(R.drawable.ic_user_placeholder)
-//                        .circleCrop()
-//                        .into(imgFoto)
-//                } else {
-//                    imgFoto.setImageResource(R.drawable.ic_user_placeholder)
-//                }
-//            }
-//        }
+        usuarioViewModel.usuario.observe(this) { usuario ->
+            usuario?.let {
+                etNombre.setText(it.nombre)
+                etEmail.setText(it.email)
+
+                // Carga de la foto usando Glide
+                if (it.fotoUrl.isNotBlank()) {
+                    Glide.with(this)
+                        .load(it.fotoUrl)
+                        .placeholder(R.drawable.person_48px)
+                        .circleCrop()
+                        .into(imgFoto)
+                } else {
+                    imgFoto.setImageResource(R.drawable.person_48px)
+                }
+            }
+        }
 
         // 3) Selector de foto desde galería
         btnCambiarFoto.setOnClickListener {
@@ -88,9 +90,19 @@ class EditProfileActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK) {
+        if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK) {
             uriFoto = data?.data
             uriFoto?.let { imgFoto.setImageURI(it) }
         }
+    }
+
+    /**
+     * Despliega la galería para elegir una imagen de perfil
+     */
+    fun editPPButton(view: View) {
+        val intent = Intent(Intent.ACTION_PICK).apply {
+            type = "image/*"
+        }
+        startActivityForResult(intent, PICK_IMAGE)
     }
 }

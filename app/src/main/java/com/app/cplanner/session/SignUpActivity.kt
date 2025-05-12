@@ -14,6 +14,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
+/**
+ * Clase para el registro de nuevos usuarios.
+ * @author Italo
+ */
 class SignUpActivity : BaseActivity() {
     private lateinit var auth: FirebaseAuth
     private val db = FirebaseFirestore.getInstance()
@@ -83,7 +87,9 @@ class SignUpActivity : BaseActivity() {
             }
     }
 
-    /** Valida campos no vacíos */
+    /**
+     * Valida el formulario de registro
+     */
     private fun validateFormSignUp(name: String, email: String, password: String): Boolean {
         return when {
             name.isEmpty() -> {
@@ -102,7 +108,9 @@ class SignUpActivity : BaseActivity() {
         }
     }
 
-    /** Llamado desde el botón "¿Ya tienes cuenta? Iniciar Sesión" */
+    /**
+     * Llamado desde el botón "¿Ya tienes cuenta? Iniciar Sesión"
+     */
     fun botonLogin(view: View) {
         startActivity(Intent(this, SignInActivity::class.java))
         finish()
