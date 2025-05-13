@@ -3,33 +3,36 @@ package com.app.cplanner.model.viewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.app.cplanner.model.entity.Tarea
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
-import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import java.util.UUID
 
 class TareaViewModel : ViewModel() {
-    private val db = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
+    private val db   = FirebaseFirestore.getInstance()
 
-    private var _listaTareas: MutableLiveData<List<Tarea>> = MutableLiveData(emptyList())
+    private val _listaTareas = MutableLiveData<List<Tarea>>(emptyList())
     val listaTareas: LiveData<List<Tarea>> = _listaTareas
 
     init {
-        getTareas()
+        cargarTareas()
     }
 
-    /**
-     * Obtiene la lista de tareas de la base de datos.
-     */
-    private fun getTareas() {
+    /** Carga las tareas de la subcolección del usuario autenticado */
+    fun cargarTareas() {
+        val uid = auth.currentUser?.uid ?: return
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val resultado = db.collection("tareas").get().await()
-
-                val tareas = resultado.documents.mapNotNull { document -> document.toObject(Tarea::class.java) }
+                val snap = db.collection("usuarios")
+                    .document(uid)
+                    .collection("tareas")
+                    .get()
+                    .await()
+                val tareas = snap.documents.mapNotNull { it.toObject(Tarea::class.java) }
                 _listaTareas.postValue(tareas)
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -37,58 +40,62 @@ class TareaViewModel : ViewModel() {
         }
     }
 
-    /**
-     * Obtiene una tarea por su ID.
-     */
-    private fun getTareaById(id: String): Tarea? {
-        return _listaTareas.value?.find { it.id == id }
-    }
-
-    /**
-     * Agrega una nueva tarea a la base de datos.
-     */
+    /** Agrega una nueva tarea a la subcolección del usuario */
     fun addTarea(tarea: Tarea) {
-        tarea.id = UUID.randomUUID().toString()
-
+        val uid = auth.currentUser?.uid ?: return
+        tarea.id = db.collection("usuarios")
+            .document(uid)
+            .collection("tareas")
+            .document().id
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                db.collection("tareas").document(tarea.id).set(tarea).await()
-                _listaTareas.postValue(_listaTareas.value?.plus(tarea))
-
+                db.collection("usuarios")
+                    .document(uid)
+                    .collection("tareas")
+                    .document(tarea.id)
+                    .set(tarea.toMap())
+                    .await()
+                _listaTareas.postValue(_listaTareas.value.orEmpty() + tarea)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
-    /**
-     * Actualiza una tarea existente en la base de datos.
-     */
+    /** Actualiza una tarea existente en la subcolección del usuario */
     fun updateTarea(tarea: Tarea) {
+        val uid = auth.currentUser?.uid ?: return
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                db.collection("tareas").document(tarea.id).update(tarea.toMap()).await()
-                _listaTareas.postValue(_listaTareas.value?.map {
-                    if (it.id == tarea.id) {
-                        tarea
-                    } else {
-                        it
+                db.collection("usuarios")
+                    .document(uid)
+                    .collection("tareas")
+                    .document(tarea.id)
+                    .update(tarea.toMap())
+                    .await()
+                _listaTareas.postValue(
+                    _listaTareas.value.orEmpty().map {
+                        if (it.id == tarea.id) tarea else it
                     }
-                })
+                )
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
-    /**
-     * Elimina una tarea definitivamente de la base de datos.
-     */
+    /** Elimina una tarea de la subcolección del usuario */
     fun deleteTarea(id: String) {
+        val uid = auth.currentUser?.uid ?: return
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                db.collection("tareas").document(id).delete().await()
-                _listaTareas.postValue(_listaTareas.value?.filter { it.id != id })
+                db.collection("usuarios")
+                    .document(uid)
+                    .collection("tareas")
+                    .document(id)
+                    .delete()
+                    .await()
+                _listaTareas.postValue(_listaTareas.value.orEmpty().filter { it.id != id })
             } catch (e: Exception) {
                 e.printStackTrace()
             }

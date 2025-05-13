@@ -38,8 +38,8 @@
                     android:layout_height="match_parent"
                     android:contentDescription="Imagen de la tarea"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_camera_alt_48dp"
-                    android:background="@color/gray_light"
+                    android:src="@drawable/edit_48px"
+                    android:background="@color/grisOscuro"
                     android:clickable="true"
                     android:focusable="true"/>
 
@@ -48,8 +48,8 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_camera_alt_48dp"
-                    android:tint="@android:color/white"/>
+                    android:src="@drawable/edit_48px"
+                    app:tint="@android:color/white" />
             </FrameLayout>
 
             <!-- Título -->
@@ -97,16 +97,11 @@
                 android:layout_height="wrap_content"/>
 
             <!-- Color -->
-            <TextView
-                android:layout_marginTop="16dp"
-                android:text="Color"
-                android:textStyle="bold"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <Spinner
-                android:id="@+id/spinnerColor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+            <Button
+                android:id="@+id/btnColorPicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pick Color" />
 
             <!-- Repetir -->
             <TextView
