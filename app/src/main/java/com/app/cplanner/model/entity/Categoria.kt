@@ -1,14 +1,16 @@
 package com.app.cplanner.model.entity
 
-data class Tarea(
+data class Categoria(
     var id: String = "",
     var nombre: String = "",
+    var color: String = "",
 
-) {
+    ) {
     fun toMap(): Map<String, Any> {
         return mapOf(
             "id" to id,
-            "nombre" to nombre
+            "nombre" to nombre,
+            "color" to color
         )
     }
 }
