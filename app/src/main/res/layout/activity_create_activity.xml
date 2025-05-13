@@ -12,8 +12,6 @@
         android:layout_width="match_parent"
         android:background="?attr/colorPrimary"
         app:title="Nueva / Editar Tarea" />
-<!--        app:navigationIcon="@drawable/ic_arrow_back"-->
-
 
     <!-- Contenido desplazable -->
     <ScrollView
@@ -27,6 +25,32 @@
             android:padding="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <!-- Imagen de la tarea -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginBottom="16dp">
+
+                <ImageView
+                    android:id="@+id/ivTaskImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="Imagen de la tarea"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_camera_alt_48dp"
+                    android:background="@color/gray_light"
+                    android:clickable="true"
+                    android:focusable="true"/>
+
+                <!-- Icono de cámara sobrepuesto -->
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_camera_alt_48dp"
+                    android:tint="@android:color/white"/>
+            </FrameLayout>
 
             <!-- Título -->
             <com.google.android.material.textfield.TextInputLayout
@@ -140,10 +164,7 @@
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-<!--            <com.google.android.gms.maps.MapView-->
-<!--                android:id="@+id/mapView"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="200dp"/>-->
+            <!-- Mapa se integrará luego -->
 
             <!-- Adjuntar archivos -->
             <TextView
@@ -159,7 +180,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"/>
 
-            <!-- Botón de guardar -->
+            <!-- Botones -->
             <Button
                 android:id="@+id/btnSave"
                 android:text="Guardar"
@@ -167,7 +188,6 @@
                 android:layout_height="wrap_content"
                 android:textSize="22sp"
                 android:layout_marginBottom="16dp"/>
-            <!-- Botón de actualizar -->
             <Button
                 android:id="@+id/btnUpdate"
                 android:text="Actualizar"
@@ -175,9 +195,6 @@
                 android:layout_height="wrap_content"
                 android:textSize="22sp"
                 android:layout_marginBottom="16dp"/>
-
-
         </LinearLayout>
     </ScrollView>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

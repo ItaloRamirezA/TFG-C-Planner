@@ -69,7 +69,7 @@ dependencies {
 
     // Para el color wheel (circulo de colores)
     implementation("com.github.yukuku:ambilwarna:2.0.1")
-
+}
 //    implementation("androidx.core:core-ktx:1.9.0")
 //    implementation("androidx.appcompat:appcompat:1.6.1")
 //    implementation("com.google.android.material:material:1.11.0")
@@ -95,4 +95,3 @@ dependencies {
 //    implementation("com.google.android.gms:play-services-auth:20.7.0")
 //
 //    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
-}
