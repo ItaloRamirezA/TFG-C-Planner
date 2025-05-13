@@ -19,7 +19,7 @@
             android:name=".activities.UserProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.CreateActivityActivity"
+            android:name=".activities.CreateTareaActivity"
             android:exported="false" />
         <activity
             android:name=".BaseActivity"

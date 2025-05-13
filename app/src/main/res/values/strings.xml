@@ -11,6 +11,8 @@
 
     <string name="Eslogan">Planifica, gestiona, cumple.\nTodo desde el mismo lugar.</string>
     <string name="no_sesion_iniciada">No has iniciado sesión</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- GENERAL -->
 
