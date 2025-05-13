@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -105,5 +104,12 @@ class EditProfileActivity : AppCompatActivity() {
             type = "image/*"
         }
         startActivityForResult(intent, PICK_IMAGE)
+    }
+
+    /**
+     * Boton para cancelar la edición del perfil y retrodecer a la pantalla anterior
+     */
+    fun cancelButton(view: View) {
+        finish()
     }
 }

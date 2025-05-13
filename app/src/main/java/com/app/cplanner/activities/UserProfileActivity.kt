@@ -13,15 +13,16 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.app.cplanner.R
 import com.app.cplanner.model.viewModel.UsuarioViewModel
+import com.app.cplanner.session.SignInActivity
 import com.bumptech.glide.Glide
 
-
+/**
+ * Pantalla de perfil de usuario.
+ */
 class UserProfileActivity : AppCompatActivity() {
-
-    // 1) Obtén tu ViewModel
+    // ViewModel para manejar la lógica de negocio del usuario
     private val usuarioViewModel by viewModels<UsuarioViewModel>()
 
-    // 2) Declara las vistas
     private lateinit var imgFoto: ImageView
     private lateinit var tvNombre: TextView
     private lateinit var tvEmail: TextView
@@ -29,9 +30,9 @@ class UserProfileActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // Recarga al volver a primer plano para que siempre traiga la versión más reciente :contentReference[oaicite:1]{index=1}
         usuarioViewModel.cargarUsuario()
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -42,13 +43,14 @@ class UserProfileActivity : AppCompatActivity() {
             insets
         }
 
-        // 3) Vincula las vistas
-        imgFoto   = findViewById(R.id.ivProfilePhoto)
-        tvNombre  = findViewById(R.id.tvProfileName)
-        tvEmail   = findViewById(R.id.tvProfileEmail)
+        // Elementos de la vista
+        imgFoto = findViewById(R.id.ivProfilePhoto)
+        tvNombre = findViewById(R.id.tvProfileName)
+        tvEmail = findViewById(R.id.tvProfileEmail)
         btnEditar = findViewById(R.id.btnEditProfile)
 
-        // 4) Observa el LiveData<Usuario> y actualiza la UI cuando llegue
+        // Observa cambios en el LiveData<Usuario> del ViewModel y actualiza la interfaz:
+        // Cada vez que el perfil (usuario) cambie o se recargue, este bloque se ejecuta
         usuarioViewModel.usuario.observe(this) { usuario ->
             if (usuario != null) {
                 // Nombre y correo
@@ -66,19 +68,19 @@ class UserProfileActivity : AppCompatActivity() {
                     imgFoto.setImageResource(R.drawable.person_48px)
                 }
             } else {
-                // Aquí podrías navegar al login si no hay usuario
+                // Si por algún motivo no hay sesión iniciada, te lleva al login
                 tvNombre.text = getString(R.string.no_sesion_iniciada)
                 tvEmail.text  = ""
                 imgFoto.setImageResource(R.drawable.person_48px)
+                startActivity(Intent(this, SignInActivity::class.java))
             }
         }
-
-        // 5) Botón para ir a editar
-        btnEditar.setOnClickListener { goToEditProfile(it) }
     }
 
+    /**
+     * Navega a la pantalla de edición de perfil.
+     */
     fun goToEditProfile(view: View) {
         startActivity(Intent(this, EditProfileActivity::class.java))
-        // no hacemos finish() si quieres volver aquí luego
     }
 }

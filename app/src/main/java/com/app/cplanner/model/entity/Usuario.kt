@@ -24,11 +24,11 @@ data class Usuario(
          */
         fun fromMap(map: Map<String, Any?>): Usuario {
             return Usuario(
-                id         = (map["id"]         as? String).orEmpty(),
-                nombre     = (map["nombre"]     as? String).orEmpty(),
-                email      = (map["email"]      as? String).orEmpty(),
+                id = (map["id"] as? String).orEmpty(),
+                nombre = (map["nombre"] as? String).orEmpty(),
+                email = (map["email"] as? String).orEmpty(),
                 contrasena = (map["contrasena"] as? String).orEmpty(),
-                fotoUrl    = (map["fotoUrl"]    as? String).orEmpty()
+                fotoUrl = (map["fotoUrl"] as? String).orEmpty()
             )
         }
     }
