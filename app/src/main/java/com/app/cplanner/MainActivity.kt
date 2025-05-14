@@ -8,6 +8,7 @@ import com.app.cplanner.activities.UserProfileActivity
 import com.app.cplanner.fragments.CategoriaDialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import androidx.activity.viewModels
+import com.app.cplanner.activities.TareasListActivity
 import com.app.cplanner.model.viewModel.CategoriaViewModel
 
 class MainActivity : BaseActivity() {
@@ -36,13 +37,11 @@ class MainActivity : BaseActivity() {
     fun createActivityBoton(view: View) {
         val intent = Intent(this, CreateTareaActivity::class.java)
         startActivity(intent)
-        finish()
     }
 
     fun goToProfile(view: View) {
         val intent = Intent(this, UserProfileActivity::class.java)
         startActivity(intent)
-        finish()
     }
 
     /** Botón para probar el diálogo de categoría */
@@ -59,6 +58,11 @@ class MainActivity : BaseActivity() {
             //     miAdapter.submitList(lista)
             // }
         }.show(supportFragmentManager, "CreateCategoryFragment")
+    }
+
+    fun goToTareasList(view: View) {
+        val intent = Intent(this, TareasListActivity::class.java)
+        startActivity(intent)
     }
 
 

@@ -5,15 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- AppBar con back -->
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:background="?attr/colorPrimary"
-        app:title="Nueva / Editar Tarea" />
+        android:layout_height="wrap_content"
+        app:title="Crear Tarea" />
 
-    <!-- Contenido desplazable -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -26,43 +22,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!-- Imagen de la tarea -->
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginBottom="16dp">
-
-                <ImageView
-                    android:id="@+id/ivTaskImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:contentDescription="Imagen de la tarea"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/edit_48px"
-                    android:background="@color/grisOscuro"
-                    android:clickable="true"
-                    android:focusable="true"/>
-
-                <!-- Icono de cámara sobrepuesto -->
-                <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/edit_48px"
-                    app:tint="@android:color/white" />
-            </FrameLayout>
-
             <!-- Título -->
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Título">
-
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
-
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Recordatorio -->
@@ -75,7 +43,6 @@
                 <TextView
                     android:layout_weight="1"
                     android:text="Recordatorio"
-                    android:textSize="16sp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"/>
                 <com.google.android.material.switchmaterial.SwitchMaterial
@@ -96,38 +63,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-            <!-- Color -->
+            <!-- Color Picker simple -->
             <Button
                 android:id="@+id/btnColorPicker"
-                android:layout_width="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Pick Color" />
+                android:text="Elegir Color"/>
 
-            <!-- Repetir -->
-            <TextView
-                android:layout_marginTop="16dp"
-                android:text="Repetir"
-                android:textStyle="bold"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <Spinner
-                android:id="@+id/spinnerRepeat"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-            <!-- Usuario -->
-            <TextView
-                android:layout_marginTop="16dp"
-                android:text="Usuario"
-                android:textStyle="bold"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <Spinner
-                android:id="@+id/spinnerUser"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-            <!-- Fecha -->
+            <!-- Multi-día -->
             <LinearLayout
                 android:layout_marginTop="16dp"
                 android:layout_width="match_parent"
@@ -136,8 +80,7 @@
                 android:orientation="horizontal">
                 <TextView
                     android:layout_weight="1"
-                    android:text="Fecha"
-                    android:textSize="16sp"
+                    android:text="Multi-día"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"/>
                 <com.google.android.material.switchmaterial.SwitchMaterial
@@ -145,51 +88,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
+
+            <!-- Fecha -->
             <Button
                 android:id="@+id/btnPickDate"
-                android:layout_marginTop="8dp"
-                android:text="Seleccionar fecha"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-            <!-- Ubicación -->
-            <TextView
                 android:layout_marginTop="16dp"
-                android:text="Ubicación"
-                android:textStyle="bold"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <!-- Mapa se integrará luego -->
-
-            <!-- Adjuntar archivos -->
-            <TextView
-                android:layout_marginTop="16dp"
-                android:text="Adjuntar Archivos"
-                android:textStyle="bold"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <Button
-                android:id="@+id/btnAttach"
-                android:text="Seleccionar archivos..."
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"/>
+                android:text="Seleccionar Fecha"/>
 
-            <!-- Botones -->
+            <!-- Guardar -->
             <Button
                 android:id="@+id/btnSave"
-                android:text="Guardar"
+                android:layout_marginTop="24dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="22sp"
-                android:layout_marginBottom="16dp"/>
-            <Button
-                android:id="@+id/btnUpdate"
-                android:text="Actualizar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="22sp"
-                android:layout_marginBottom="16dp"/>
+                android:text="Guardar Tarea"/>
+
         </LinearLayout>
     </ScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
