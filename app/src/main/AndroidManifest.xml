@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/logo_cplanner_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.C_Planner"
+        android:screenOrientation="portrait"
         tools:targetApi="31">
         <activity
             android:name=".activities.EditProfileActivity"

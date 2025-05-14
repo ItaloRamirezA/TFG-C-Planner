@@ -11,7 +11,7 @@
         android:id="@+id/ivSinInLogo"
         android:layout_width="350dp"
         android:layout_height="280dp"
-        android:src="@drawable/sin_in_logo"
+        android:src="@drawable/temporal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

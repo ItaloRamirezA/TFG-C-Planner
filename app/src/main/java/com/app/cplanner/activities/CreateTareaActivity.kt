@@ -29,40 +29,41 @@ class CreateTareaActivity : AppCompatActivity() {
     }
 
     private lateinit var ivTaskImage: ImageView
-    private lateinit var etTitle      : TextInputEditText
+    private lateinit var etTitle : TextInputEditText
     private lateinit var switchReminder: SwitchMaterial
-    private lateinit var spinnerCategory: Spinner
+    private lateinit var spinnerCategory : Spinner
     private lateinit var btnColorPicker : Button
-    private lateinit var switchMultiDay: SwitchMaterial
-    private lateinit var btnPickDate    : Button
-    private lateinit var btnAttach      : Button
-    private lateinit var btnSave        : Button
+    private lateinit var switchMultiDay : SwitchMaterial
+    private lateinit var btnPickDate : Button
+    private lateinit var btnAttach : Button
+    private lateinit var btnSave : Button
 
-    private var imageUri: Uri? = null
+    private var imageUri : Uri? = null
     private var fileUri : Uri? = null
-    private var selectedColor = 0xFF0000FF.toInt() // color inicial
-    private var pickedDateStr: String? = null
+    private var selectedColor = 0xFF0000FF.toInt() // color default
+    private var pickedDateStr : String? = null
 
+    // View Models para las consultas
     private val categoriaVM by viewModels<CategoriaViewModel>()
-    private val tareaVM     by viewModels<TareaViewModel>()
+    private val tareaVM by viewModels<TareaViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_create_tarea)
 
-        // 1) Vincular vistas
-        ivTaskImage      = findViewById(R.id.ivTaskImage)
-        etTitle          = findViewById(R.id.etTitle)
-        switchReminder   = findViewById(R.id.switchReminder)
-        spinnerCategory  = findViewById(R.id.spinnerCategory)
-        btnColorPicker   = findViewById(R.id.btnColorPicker)
-        switchMultiDay   = findViewById(R.id.switchMultiDay)
-        btnPickDate      = findViewById(R.id.btnPickDate)
-        btnAttach        = findViewById(R.id.btnAttach)
-        btnSave          = findViewById(R.id.btnSave)
+        // Vincular vistas
+        ivTaskImage = findViewById(R.id.ivTaskImage)
+        etTitle = findViewById(R.id.etTitle)
+        switchReminder = findViewById(R.id.switchReminder)
+        spinnerCategory = findViewById(R.id.spinnerCategory)
+        btnColorPicker = findViewById(R.id.btnColorPicker)
+        switchMultiDay = findViewById(R.id.switchMultiDay)
+        btnPickDate = findViewById(R.id.btnPickDate)
+        btnAttach = findViewById(R.id.btnAttach)
+        btnSave = findViewById(R.id.btnSave)
 
-        // 2) Imagen cabecera
+        // Imagen cabecera
         ivTaskImage.setOnClickListener {
             startActivityForResult(
                 Intent(Intent.ACTION_PICK).apply { type = "image/*" },
@@ -70,7 +71,7 @@ class CreateTareaActivity : AppCompatActivity() {
             )
         }
 
-        // 3) Cargar categorías en spinner
+        //  Cargar categorías en spinner
         val catAdapter = ArrayAdapter<Categoria>(
             this, android.R.layout.simple_spinner_item, mutableListOf()
         ).also {
@@ -84,7 +85,7 @@ class CreateTareaActivity : AppCompatActivity() {
         }
         categoriaVM.cargarCategorias()
 
-        // 4) Color picker
+        // Color picker
         btnColorPicker.setBackgroundColor(selectedColor)
         btnColorPicker.setOnClickListener {
             AmbilWarnaDialog(this, selectedColor,
@@ -98,7 +99,7 @@ class CreateTareaActivity : AppCompatActivity() {
             ).show()
         }
 
-        // 5) Fecha
+        // Fecha
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         btnPickDate.setOnClickListener {
             val cal = Calendar.getInstance()
@@ -114,7 +115,7 @@ class CreateTareaActivity : AppCompatActivity() {
             ).show()
         }
 
-        // 6) Archivos
+        //  Archivos
         btnAttach.setOnClickListener {
             Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
                 addCategory(Intent.CATEGORY_OPENABLE)
@@ -122,28 +123,25 @@ class CreateTareaActivity : AppCompatActivity() {
             }.also { startActivityForResult(it, PICK_FILE) }
         }
 
-        // 7) Guardar tarea
+        // Guardar tarea
         btnSave.setOnClickListener {
             val tarea = Tarea().apply {
-                title        = etTitle.text.toString()
-                reminder     = switchReminder.isChecked
-                categoryId   = (spinnerCategory.selectedItem as Categoria).id
-                colorHex     = String.format("#%06X", 0xFFFFFF and selectedColor)
-                multiDay     = switchMultiDay.isChecked
-                date         = pickedDateStr ?: ""
-                imageUri     = this@CreateTareaActivity.imageUri?.toString() ?: ""
-                attachmentUri= this@CreateTareaActivity.fileUri?.toString()  ?: ""
-                // userId y demás los maneja tu ViewModel
+                title = etTitle.text.toString()
+                reminder = switchReminder.isChecked
+                categoryId = (spinnerCategory.selectedItem as Categoria).id
+                colorHex = String.format("#%06X", 0xFFFFFF and selectedColor)
+                multiDay = switchMultiDay.isChecked
+                date = pickedDateStr ?: ""
+                imageUri = this@CreateTareaActivity.imageUri?.toString() ?: ""
+                attachmentUri = this@CreateTareaActivity.fileUri?.toString()  ?: ""
             }
             tareaVM.addTarea(tarea)
             Toast.makeText(this, "Tarea creada", Toast.LENGTH_SHORT).show()
-            finish()
         }
     }
 
-    override fun onActivityResult(
-        requestCode: Int, resultCode: Int, data: Intent?
-    ) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode != Activity.RESULT_OK) return
 
