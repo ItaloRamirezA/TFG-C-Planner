@@ -7,11 +7,12 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.app.cplanner.R
+import com.app.cplanner.fragments.CategoriaDialogFragment
 import com.app.cplanner.model.entity.Categoria
 import com.app.cplanner.model.entity.Tarea
 import com.app.cplanner.model.viewModel.CategoriaViewModel
@@ -59,6 +60,7 @@ class CreateTareaActivity : AppCompatActivity() {
         etTitle = findViewById(R.id.etTitle)
         switchReminder = findViewById(R.id.switchReminder)
         spinnerCategory = findViewById(R.id.spinnerCategory)
+        val btnAddCategory = findViewById<Button>(R.id.btnAddCategory)
         switchMultiDay = findViewById(R.id.switchMultiDay)
         datePickerStart = findViewById(R.id.datePicker)
         datePickerEnd = findViewById(R.id.datePickerEnd)
@@ -76,10 +78,28 @@ class CreateTareaActivity : AppCompatActivity() {
         )
         catAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerCategory.adapter = catAdapter
+
+        // Observe categories and add "Sin categoría" as the default option
         categoriaVM.listaCategorias.observe(this) { cats ->
+            val categoriasConOpciones = mutableListOf(
+                Categoria(id = "none", nombre = "Sin categoría", color = "#FFFFFF")
+            ).apply {
+                addAll(cats)
+            }
             catAdapter.clear()
-            catAdapter.addAll(cats)
+            catAdapter.addAll(categoriasConOpciones)
             catAdapter.notifyDataSetChanged()
+
+            // Set default selection to "Sin categoría"
+            spinnerCategory.setSelection(0)
+        }
+
+        // "+" button to open the category creation dialog
+        btnAddCategory.setOnClickListener {
+            CategoriaDialogFragment { nuevaCat ->
+                categoriaVM.addCategoria(nuevaCat) // Save the new category
+                Toast.makeText(this, "Categoría creada: ${nuevaCat.nombre}", Toast.LENGTH_SHORT).show()
+            }.show(supportFragmentManager, "CreateCategoryFragment")
         }
 
         (viewColorPreview.background as GradientDrawable).setColor(selectedColor)
@@ -117,6 +137,7 @@ class CreateTareaActivity : AppCompatActivity() {
             startActivityForResult(Intent.createChooser(intent, "Selecciona archivos"), REQUEST_CODE_PICK_FILES)
         }
 
+        // Save button logic
         btnSave.setOnClickListener {
             val title = etTitle.text.toString().trim()
             if (title.isEmpty()) {
@@ -126,7 +147,8 @@ class CreateTareaActivity : AppCompatActivity() {
 
             val catPos = spinnerCategory.selectedItemPosition
             val categoryId = if (catPos >= 0 && spinnerCategory.count > 0) {
-                (spinnerCategory.selectedItem as Categoria).id
+                val selectedCategory = spinnerCategory.selectedItem as Categoria
+                if (selectedCategory.id == "none") "" else selectedCategory.id
             } else {
                 ""
             }

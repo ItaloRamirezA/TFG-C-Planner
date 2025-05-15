@@ -13,4 +13,8 @@ data class Categoria(
             "color" to color
         )
     }
+
+    override fun toString(): String {
+        return nombre
+    }
 }

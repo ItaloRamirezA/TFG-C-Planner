@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.app.cplanner.activities.CreateTareaActivity
 
 open class BaseActivity : AppCompatActivity() {
     private lateinit var progbar: Dialog
@@ -50,7 +51,15 @@ open class BaseActivity : AppCompatActivity() {
      * @param activity Activity
      * @param msg Mensaje a mostrar
      */
-    fun showToast(activity: Activity, msg:String) {
+    public fun showToast(activity: Activity, msg:String) {
         Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
     }
+
+    companion object {
+        public fun showToast(activity: Activity, msg:String) {
+            Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
 }
