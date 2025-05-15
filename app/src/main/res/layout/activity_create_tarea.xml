@@ -8,7 +8,7 @@
     <com.google.android.material.appbar.MaterialToolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="Crear Tarea" />
+        app:title="Crear Tarea"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -63,13 +63,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-            <!-- Color Picker simple -->
-            <Button
-                android:id="@+id/btnColorPicker"
+            <!-- Círculo de color -->
+            <View
+                android:id="@+id/viewColorPreview"
                 android:layout_marginTop="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Elegir Color"/>
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle_color_preview"/>
 
             <!-- Multi-día -->
             <LinearLayout
@@ -96,6 +96,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Seleccionar Fecha"/>
+
+            <!-- Adjuntar archivo -->
+            <Button
+                android:id="@+id/btnAttachFile"
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Adjuntar archivo"/>
 
             <!-- Guardar -->
             <Button
