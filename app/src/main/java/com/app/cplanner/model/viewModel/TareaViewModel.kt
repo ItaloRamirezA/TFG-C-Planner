@@ -11,10 +11,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
+/**
+ * ViewModel para manejar la lógica de negocio relacionada con las tareas.
+ *
+ * @property auth FirebaseAuth para autenticación de usuarios.
+ * @property db FirebaseFirestore para acceso a la base de datos Firestore.
+ */
 class TareaViewModel : ViewModel() {
+    // Firebase
     private val auth = FirebaseAuth.getInstance()
     private val db   = FirebaseFirestore.getInstance()
 
+    // LiveData para almacenar la lista de tareas
     private val _listaTareas = MutableLiveData<List<Tarea>>(emptyList())
     val listaTareas: LiveData<List<Tarea>> = _listaTareas
 
@@ -22,6 +30,9 @@ class TareaViewModel : ViewModel() {
         cargarTareas()
     }
 
+    /**
+     * Carga las tareas del usuario actual desde Firestore.
+     */
     fun cargarTareas() {
         val uid = auth.currentUser?.uid ?: return
         viewModelScope.launch(Dispatchers.IO) {
@@ -39,6 +50,11 @@ class TareaViewModel : ViewModel() {
         }
     }
 
+    /**
+     * Agrega una nueva tarea a la base de datos.
+     *
+     * @param tarea La tarea a agregar.
+     */
     fun addTarea(tarea: Tarea) {
         val uid = auth.currentUser?.uid ?: return
         tarea.id = db.collection("usuarios")
@@ -59,8 +75,17 @@ class TareaViewModel : ViewModel() {
         }
     }
 
+    /**
+     * ACtualiza una tarea de la base de datos solo
+     * si hay un usuario autenticado.
+     *
+     * @param tarea La tarea a eliminar.
+     */
     fun updateTarea(tarea: Tarea) {
+        // Si no hay usuario autenticado, no se puede actualizar la tarea
         val uid = auth.currentUser?.uid ?: return
+
+        // Actualiza la tarea en Firestore
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 db.collection("usuarios")
@@ -69,6 +94,8 @@ class TareaViewModel : ViewModel() {
                     .document(tarea.id)
                     .update(tarea.toMap())
                     .await()
+
+
                 _listaTareas.postValue(
                     _listaTareas.value.orEmpty().map {
                         if (it.id == tarea.id) tarea else it

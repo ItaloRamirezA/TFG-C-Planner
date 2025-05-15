@@ -148,16 +148,26 @@ class CreateTareaActivity : AppCompatActivity() {
                 Toast.makeText(this, "Título vacío", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+
+            // Determinar ID de categoría (vacío si no hay selección)
+            val catPos = spinnerCategory.selectedItemPosition
+            val categoryId = if (catPos >= 0 && spinnerCategory.count > 0) {
+                (spinnerCategory.selectedItem as Categoria).id
+            } else {
+                ""  // sin categoría
+            }
+
             val tarea = Tarea().apply {
-                titulo        = title
-                reminder      = switchReminder.isChecked
-                categoryId    = (spinnerCategory.selectedItem as Categoria).id
-                colorHex      = String.format("#%06X", 0xFFFFFF and selectedColor)
-                multiDay      = switchMultiDay.isChecked
-                date          = pickedDate
+                titulo       = title
+                reminder     = switchReminder.isChecked
+                this.categoryId = categoryId
+                colorHex     = String.format("#%06X", 0xFFFFFF and selectedColor)
+                multiDay     = switchMultiDay.isChecked
+                date         = pickedDate
                 attachmentUri = fileUriToAttach?.toString().orEmpty()
                 sharedWith    = sharedWithIds.toList()
             }
+
             tareaVM.addTarea(tarea)
             Toast.makeText(this, "Tarea guardada", Toast.LENGTH_SHORT).show()
             finish()

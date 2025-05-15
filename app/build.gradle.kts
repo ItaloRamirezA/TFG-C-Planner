@@ -57,6 +57,7 @@ dependencies {
 
     // Lifecycle components
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
+    implementation(libs.androidx.swiperefreshlayout)
 
     // Dependencias para testear
     testImplementation("junit:junit:4.13.2")

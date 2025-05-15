@@ -21,7 +21,7 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <!-- Nombre/Título -->
+            <!-- Título -->
             <TextView
                 android:id="@+id/tvTaskName"
                 android:layout_width="wrap_content"
@@ -41,12 +41,12 @@
                 android:textColor="@android:color/darker_gray"
                 android:layout_marginTop="4dp"/>
 
-            <!-- Fecha (se ocultará si está vacía) -->
+            <!-- Fecha -->
             <TextView
                 android:id="@+id/tvTaskDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2025-05-15"
+                android:text="2005-07-05"
                 android:textSize="12sp"
                 android:textColor="@android:color/darker_gray"
                 android:layout_marginTop="2dp"/>

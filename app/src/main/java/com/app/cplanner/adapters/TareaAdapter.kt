@@ -38,40 +38,71 @@ class TareaAdapter(
         return TaskViewHolder(view)
     }
 
+    // Cantidad de items será la cantidad de tareas que tiene el usuario
     override fun getItemCount(): Int = tasks.size
 
+    /**
+     * Asigna los valores a cada vista de la tarjeta de tarea.
+     *
+     * @param holder ViewHolder que contiene las vistas de la tarjeta.
+     * @param position Posición de la tarea en la lista.
+     */
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
+        // Variable que almacena la tarea en la posición actual
         val task = tasks[position]
 
-        // Fondo
+        // Campos obligatorios
+        colorFondo(holder, task)
+        mostrarNombre(holder, task)
+
+        // Campos opcionales
+        mostrarCategoria(holder, task)
+        mostrarFecha(holder, task)
+        edicionTarea()
+    }
+
+    /** TODO
+     * Muestra la vista de edición de la tarea al hacer clic en ella.
+     */
+    fun edicionTarea() {
+
+    }
+
+    /**
+     * Cambia el color de fondo de la tarjeta según el color elegido por el usuario.
+     */
+    fun colorFondo(holder: TaskViewHolder, task: Tarea) {
         holder.card.setCardBackgroundColor(Color.parseColor(task.colorHex))
+    }
 
-        // Nombre de la tarea (antes usabas task.titulo, ahora task.nombre)
-        holder.name.text = task.titulo
+    /**
+     * Muestra el nombre de la tarea.
+     */
+    fun mostrarNombre(holder: TaskViewHolder, task: Tarea) {
+        holder.name.text = "Título: \"${task.titulo}\""
+    }
 
-        // Categoría
-        // Mostrar nombre de categoría (o "-" si no lo encuentra)
-        holder.category.text = categoryNames[task.categoryId] ?: "-"
+    /**
+     * Muestra la categoría de una tarea solo si existe.
+     */
+    fun mostrarCategoria(holder: TaskViewHolder, task: Tarea) {
+        if (task.categoryId.isBlank()) {
+            holder.category.visibility = View.GONE
+        } else {
+            holder.category.visibility = View.VISIBLE
+            holder.category.text = "Categoría: \"${categoryNames[task.categoryId]}\""
+        }
+    }
 
-        // Fecha solo si existe
+    /**
+     * Muestra la fecha de una tarea solo si existe.
+     */
+    fun mostrarFecha(holder: TaskViewHolder, task: Tarea) {
         if (task.date.isBlank()) {
             holder.date.visibility = View.GONE
         } else {
             holder.date.visibility = View.VISIBLE
-            holder.date.text = task.date
+            holder.date.text = "Fecha: ${task.date}"
         }
-
-        // Imagen si existe
-//        if (task.imageUri.isNotBlank()) {
-//            holder.thumbnail.visibility = View.VISIBLE
-//            Glide.with(holder.thumbnail.context)
-//                .load(task.imageUri)
-//                .centerCrop()
-//                .into(holder.thumbnail)
-//        } else {
-//            holder.thumbnail.visibility = View.GONE
-//        }
-
-        holder.itemView.setOnClickListener { onClick(task) }
     }
 }
