@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide
  */
 class TareaAdapter(
     private val tasks: List<Tarea>,
+    private val categoryNames: Map<String,String>,
     private val onClick: (Tarea) -> Unit
 ) : RecyclerView.Adapter<TareaAdapter.TaskViewHolder>() {
 
@@ -49,7 +50,8 @@ class TareaAdapter(
         holder.name.text = task.titulo
 
         // Categoría
-        holder.category.text = task.categoryId
+        // Mostrar nombre de categoría (o "-" si no lo encuentra)
+        holder.category.text = categoryNames[task.categoryId] ?: "-"
 
         // Fecha solo si existe
         if (task.date.isBlank()) {

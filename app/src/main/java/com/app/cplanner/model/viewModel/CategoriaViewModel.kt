@@ -24,6 +24,9 @@ class CategoriaViewModel : ViewModel() {
     private val _listaCategorias = MutableLiveData<List<Categoria>>(emptyList())
     val listaCategorias: LiveData<List<Categoria>> = _listaCategorias
 
+    private val _categoriesMap = MutableLiveData<Map<String,String>>(emptyMap())
+    val categoriesMap: LiveData<Map<String,String>> = _categoriesMap
+
     init {
         cargarCategorias()
     }
@@ -40,12 +43,11 @@ class CategoriaViewModel : ViewModel() {
                     .collection("categorias")
                     .get()
                     .await()
-                val cats = snap.documents
-                    .mapNotNull { it.toObject(Categoria::class.java) }
+                val cats = snap.documents.mapNotNull { it.toObject(Categoria::class.java) }
                 _listaCategorias.postValue(cats)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+                // Actualizar el map de id→nombre
+                _categoriesMap.postValue(cats.associate { it.id to it.nombre })
+            } catch(e:Exception) { e.printStackTrace() }
         }
     }
 
