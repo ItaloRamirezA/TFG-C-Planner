@@ -9,6 +9,8 @@ import android.widget.*
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.viewModels
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.app.cplanner.R
 import com.app.cplanner.model.entity.Categoria
 import com.app.cplanner.model.entity.Tarea
@@ -47,6 +49,12 @@ class CreateTareaActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_create_tarea)
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(bars.left, bars.top, bars.right, bars.bottom)
+            insets
+        }
 
         etTitle = findViewById(R.id.etTitle)
         switchReminder = findViewById(R.id.switchReminder)

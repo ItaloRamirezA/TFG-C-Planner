@@ -9,6 +9,7 @@ import com.app.cplanner.fragments.CategoriaDialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import androidx.activity.viewModels
 import com.app.cplanner.activities.TareasListActivity
+import com.app.cplanner.activities.TrashActivity
 import com.app.cplanner.model.viewModel.CategoriaViewModel
 
 class MainActivity : BaseActivity() {
@@ -53,15 +54,17 @@ class MainActivity : BaseActivity() {
             // 2) Muestra un mensaje de confirmación
             showToast(this, "Categoría «${nuevaCat.nombre}» creada")
 
-            // 3) (Opcional) Observa LiveData para actualizar UI si tuvieras un Recycler/Spinner
-            // categoriaViewModel.listaCategorias.observe(this) { lista ->
-            //     miAdapter.submitList(lista)
-            // }
+
         }.show(supportFragmentManager, "CreateCategoryFragment")
     }
 
     fun goToTareasList(view: View) {
         val intent = Intent(this, TareasListActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun goToTrashList(view: View) {
+        val intent = Intent(this, TrashActivity::class.java)
         startActivity(intent)
     }
 

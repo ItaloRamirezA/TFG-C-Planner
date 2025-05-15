@@ -40,6 +40,7 @@ class TareaViewModel : ViewModel() {
                 val snap = db.collection("usuarios")
                     .document(uid)
                     .collection("tareas")
+                    .whereEqualTo("deleted", false) // Exclude deleted tasks
                     .get()
                     .await()
                 val tareas = snap.documents.mapNotNull { it.toObject(Tarea::class.java) }
@@ -102,6 +103,46 @@ class TareaViewModel : ViewModel() {
                     }
                 )
             } catch(e: Exception) { e.printStackTrace() }
+        }
+    }
+
+    fun moveToTrash(tarea: Tarea) {
+        val uid = auth.currentUser?.uid ?: return
+        tarea.deleted = true
+
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                db.collection("usuarios")
+                    .document(uid)
+                    .collection("tareas")
+                    .document(tarea.id)
+                    .update("deleted", true)
+                    .await()
+
+                _listaTareas.postValue(
+                    _listaTareas.value.orEmpty().filter { it.id != tarea.id }
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun getDeletedTasks() {
+        val uid = auth.currentUser?.uid ?: return
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val snap = db.collection("usuarios")
+                    .document(uid)
+                    .collection("tareas")
+                    .whereEqualTo("deleted", true)
+                    .get()
+                    .await()
+                val deletedTasks = snap.documents.mapNotNull { it.toObject(Tarea::class.java) }
+                _listaTareas.postValue(deletedTasks)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 }

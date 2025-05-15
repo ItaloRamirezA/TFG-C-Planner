@@ -19,6 +19,9 @@
         android:theme="@style/Theme.C_Planner"
         tools:targetApi="31">
         <activity
+            android:name=".activities.TrashActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.TareasListActivity"
             android:exported="false" />
         <activity
