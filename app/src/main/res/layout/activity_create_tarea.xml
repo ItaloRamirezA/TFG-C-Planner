@@ -12,8 +12,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:fillViewport="true" android:layout_height="wrap_content">
 
         <LinearLayout
             android:orientation="vertical"
@@ -97,6 +96,16 @@
                 android:spinnersShown="false"
                 android:layout_marginTop="16dp"/>
 
+            <!-- Fecha de fin -->
+            <DatePicker
+                android:id="@+id/datePickerEnd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:calendarViewShown="true"
+                android:spinnersShown="false"
+                android:layout_marginTop="16dp"
+                android:visibility="gone"/>
+
             <!-- Adjuntar archivo -->
             <Button
                 android:id="@+id/btnAttachFile"
@@ -104,6 +113,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Adjuntar archivo"/>
+
+            <!-- Lista de archivos adjuntos -->
+            <LinearLayout
+                android:id="@+id/llAttachedFiles"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp"/>
 
             <!-- Campo para escribir email y añadir usuario -->
             <com.google.android.material.textfield.TextInputLayout
@@ -119,7 +136,7 @@
                     android:inputType="textEmailAddress"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Tus chips con los usuarios añadidos -->
+            <!-- Chips con los usuarios añadidos -->
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/chipGroupShared"
                 android:layout_width="match_parent"

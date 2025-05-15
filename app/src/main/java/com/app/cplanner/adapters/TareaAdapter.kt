@@ -98,11 +98,15 @@ class TareaAdapter(
      * Muestra la fecha de una tarea solo si existe.
      */
     fun mostrarFecha(holder: TaskViewHolder, task: Tarea) {
-        if (task.date.isBlank()) {
+        if (task.startDate.isBlank()) {
             holder.date.visibility = View.GONE
         } else {
             holder.date.visibility = View.VISIBLE
-            holder.date.text = "Fecha: ${task.date}"
+            holder.date.text = if (task.multiDay) {
+                "Inicio: ${task.startDate}\nFin: ${task.endDate}"
+            } else {
+                "Fecha: ${task.startDate}"
+            }
         }
     }
 }
