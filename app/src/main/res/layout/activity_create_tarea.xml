@@ -105,6 +105,28 @@
                 android:layout_height="wrap_content"
                 android:text="Adjuntar archivo"/>
 
+            <!-- Campo para escribir email y añadir usuario -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Compartir con (email)">
+
+                <AutoCompleteTextView
+                    android:id="@+id/actvSharedEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Tus chips con los usuarios añadidos -->
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupShared"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:singleLine="false"
+                app:chipSpacing="8dp"/>
+
             <!-- Guardar -->
             <Button
                 android:id="@+id/btnSave"

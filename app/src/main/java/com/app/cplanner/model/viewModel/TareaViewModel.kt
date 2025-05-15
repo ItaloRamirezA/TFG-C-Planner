@@ -45,6 +45,7 @@ class TareaViewModel : ViewModel() {
             .document(uid)
             .collection("tareas")
             .document().id
+
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 db.collection("usuarios")
@@ -54,9 +55,26 @@ class TareaViewModel : ViewModel() {
                     .set(tarea.toMap())
                     .await()
                 _listaTareas.postValue(_listaTareas.value.orEmpty() + tarea)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+            } catch(e: Exception) { e.printStackTrace() }
+        }
+    }
+
+    fun updateTarea(tarea: Tarea) {
+        val uid = auth.currentUser?.uid ?: return
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                db.collection("usuarios")
+                    .document(uid)
+                    .collection("tareas")
+                    .document(tarea.id)
+                    .update(tarea.toMap())
+                    .await()
+                _listaTareas.postValue(
+                    _listaTareas.value.orEmpty().map {
+                        if (it.id == tarea.id) tarea else it
+                    }
+                )
+            } catch(e: Exception) { e.printStackTrace() }
         }
     }
 }
