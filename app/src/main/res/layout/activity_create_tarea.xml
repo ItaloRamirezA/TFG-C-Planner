@@ -13,7 +13,6 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"
         android:fillViewport="true">
 
         <LinearLayout
@@ -89,13 +88,14 @@
                     android:layout_height="wrap_content"/>
             </LinearLayout>
 
-            <!-- Fecha -->
-            <Button
-                android:id="@+id/btnPickDate"
-                android:layout_marginTop="16dp"
+            <!-- Calendario -->
+            <DatePicker
+                android:id="@+id/datePicker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Seleccionar Fecha"/>
+                android:calendarViewShown="true"
+                android:spinnersShown="false"
+                android:layout_marginTop="16dp"/>
 
             <!-- Adjuntar archivo -->
             <Button

@@ -1,12 +1,8 @@
 package com.app.cplanner.activities
 
-import android.app.DatePickerDialog
-import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.provider.OpenableColumns
-import android.view.inputmethod.EditorInfo
 import android.view.View
 import android.widget.*
 import androidx.activity.enableEdgeToEdge
@@ -21,23 +17,18 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textfield.TextInputEditText
-import com.google.firebase.firestore.FirebaseFirestore
 import yuku.ambilwarna.AmbilWarnaDialog
 import java.text.SimpleDateFormat
 import java.util.*
 
 class CreateTareaActivity : AppCompatActivity() {
 
-    companion object {
-        private const val PICK_FILE = 300
-    }
-
     // Vistas principales
     private lateinit var etTitle          : TextInputEditText
     private lateinit var switchReminder   : SwitchMaterial
     private lateinit var spinnerCategory  : Spinner
     private lateinit var switchMultiDay   : SwitchMaterial
-    private lateinit var btnPickDate      : Button
+    private lateinit var datePicker       : DatePicker
     private lateinit var btnAttachFile    : Button
     private lateinit var btnSave          : Button
     private lateinit var viewColorPreview : View
@@ -49,7 +40,6 @@ class CreateTareaActivity : AppCompatActivity() {
 
     // Estados internos
     private var selectedColor   = 0xFF0000FF.toInt()
-    private var pickedDate      = ""
     private var fileUriToAttach : Uri? = null
 
     // ViewModels
@@ -66,7 +56,7 @@ class CreateTareaActivity : AppCompatActivity() {
         switchReminder   = findViewById(R.id.switchReminder)
         spinnerCategory  = findViewById(R.id.spinnerCategory)
         switchMultiDay   = findViewById(R.id.switchMultiDay)
-        btnPickDate      = findViewById(R.id.btnPickDate)
+        datePicker       = findViewById(R.id.datePicker)
         btnAttachFile    = findViewById(R.id.btnAttachFile)
         btnSave          = findViewById(R.id.btnSave)
         viewColorPreview = findViewById(R.id.viewColorPreview)
@@ -101,47 +91,7 @@ class CreateTareaActivity : AppCompatActivity() {
             ).show()
         }
 
-        // 4) DatePicker para fecha
-        btnPickDate.setOnClickListener {
-            val c = Calendar.getInstance()
-            DatePickerDialog(this,
-                { _, y, m, d ->
-                    c.set(y, m, d)
-                    val fmt = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                    pickedDate = fmt.format(c.time)
-                    btnPickDate.text = pickedDate
-                },
-                c.get(Calendar.YEAR),
-                c.get(Calendar.MONTH),
-                c.get(Calendar.DAY_OF_MONTH)
-            ).show()
-        }
-
-        // 5) Configurar AutoCompleteTextView para shared email
-        // (no adapter necesario si solo usamos ENTER)
-        actvSharedEmail.setOnItemClickListener { _, _, _, _ ->
-            lookupAndAddUserByEmail(actvSharedEmail.text.toString().trim())
-        }
-        actvSharedEmail.setOnEditorActionListener { v, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                lookupAndAddUserByEmail(v.text.toString().trim())
-                true
-            } else false
-        }
-
-        // 6) Adjuntar archivo con permiso persistente
-        btnAttachFile.setOnClickListener {
-            Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-                addCategory(Intent.CATEGORY_OPENABLE)
-                type = "*/*"
-                addFlags(
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION or
-                            Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
-                )
-            }.also { startActivityForResult(it, PICK_FILE) }
-        }
-
-        // 7) Guardar tarea con todos los campos
+        // 4) Guardar tarea con todos los campos
         btnSave.setOnClickListener {
             val title = etTitle.text.toString().trim()
             if (title.isEmpty()) {
@@ -157,13 +107,19 @@ class CreateTareaActivity : AppCompatActivity() {
                 ""  // sin categoría
             }
 
+            // Obtener fecha seleccionada del DatePicker
+            val day = datePicker.dayOfMonth
+            val month = datePicker.month
+            val year = datePicker.year
+            val selectedDate = String.format("%04d-%02d-%02d", year, month + 1, day)
+
             val tarea = Tarea().apply {
                 titulo       = title
                 reminder     = switchReminder.isChecked
                 this.categoryId = categoryId
                 colorHex     = String.format("#%06X", 0xFFFFFF and selectedColor)
                 multiDay     = switchMultiDay.isChecked
-                date         = pickedDate
+                date         = selectedDate
                 attachmentUri = fileUriToAttach?.toString().orEmpty()
                 sharedWith    = sharedWithIds.toList()
             }
@@ -172,65 +128,5 @@ class CreateTareaActivity : AppCompatActivity() {
             Toast.makeText(this, "Tarea guardada", Toast.LENGTH_SHORT).show()
             finish()
         }
-    }
-
-    // Manejo de resultado de selección de archivo
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == PICK_FILE && resultCode == RESULT_OK) {
-            data?.data?.let { uri ->
-                contentResolver.takePersistableUriPermission(
-                    uri, Intent.FLAG_GRANT_READ_URI_PERMISSION
-                )
-                fileUriToAttach = uri
-                // Mostrar nombre en el botón
-                contentResolver.query(uri, null, null, null, null)?.use { cursor ->
-                    if (cursor.moveToFirst()) {
-                        val idx  = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                        val name = if (idx >= 0) cursor.getString(idx) else "archivo"
-                        btnAttachFile.text = name
-                    }
-                }
-            }
-        }
-    }
-
-    // Busca en Firestore por email y añade chip
-    private fun lookupAndAddUserByEmail(email: String) {
-        if (email.isEmpty()) return
-        FirebaseFirestore.getInstance()
-            .collection("usuarios")
-            .whereEqualTo("email", email)
-            .get()
-            .addOnSuccessListener { snap ->
-                if (!snap.isEmpty) {
-                    val doc    = snap.documents[0]
-                    val uid    = doc.id
-                    val nombre = doc.getString("nombre").orEmpty()
-                    if (!sharedWithIds.contains(uid)) {
-                        sharedWithIds.add(uid)
-                        addChip(nombre, uid)
-                    }
-                    actvSharedEmail.text?.clear()
-                } else {
-                    Toast.makeText(this, "Usuario no encontrado", Toast.LENGTH_SHORT).show()
-                }
-            }
-            .addOnFailureListener {
-                Toast.makeText(this, "Error buscando usuario", Toast.LENGTH_SHORT).show()
-            }
-    }
-
-    // Crea un Chip para el usuario añadido y gestiona su borrado
-    private fun addChip(displayName: String, uid: String) {
-        val chip = Chip(this).apply {
-            text             = displayName
-            isCloseIconVisible = true
-            setOnCloseIconClickListener {
-                sharedWithIds.remove(uid)
-                chipGroupShared.removeView(this)
-            }
-        }
-        chipGroupShared.addView(chip)
     }
 }
