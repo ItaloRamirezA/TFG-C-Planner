@@ -150,7 +150,7 @@ class CreateTareaActivity : AppCompatActivity() {
                 multiDay = switchMultiDay.isChecked,
                 startDate = startDate,
                 endDate = endDate,
-                attachmentUri = fileUrisToAttach.joinToString(",") { it.toString() },
+                attachments = fileUrisToAttach.map { it.toString() },
                 sharedWith = sharedWithIds.toList()
             )
 

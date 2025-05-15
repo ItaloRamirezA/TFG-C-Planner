@@ -13,7 +13,7 @@ data class Tarea(
     var startDate: String = "",
     var endDate: String = "",
     var sharedWith: List<String> = emptyList(),
-    var attachmentUri: String = ""
+    var attachments: List<String> = emptyList()
 ) {
     fun toMap(): Map<String, Any> = mapOf(
         "id" to id,
@@ -25,6 +25,6 @@ data class Tarea(
         "startDate" to startDate,
         "endDate" to endDate,
         "sharedWith" to sharedWith,
-        "attachmentUri" to attachmentUri
+        "attachments" to attachments,
     )
 }

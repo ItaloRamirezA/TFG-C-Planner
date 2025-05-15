@@ -59,6 +59,7 @@ class TareaAdapter(
         mostrarCategoria(holder, task)
         mostrarFecha(holder, task)
         edicionTarea()
+        mostrarArchivos(holder, task)
     }
 
     /** TODO
@@ -107,6 +108,20 @@ class TareaAdapter(
             } else {
                 "Fecha: ${task.startDate}"
             }
+        }
+    }
+
+    /**
+     * Muestra los archivos adjuntos de una tarea solo si existen.
+     */
+    fun mostrarArchivos(holder: TaskViewHolder, task: Tarea) {
+        if (task.attachments.isNotEmpty()) {
+            holder.thumbnail.visibility = View.VISIBLE
+            Glide.with(holder.thumbnail.context)
+                .load(task.attachments.first()) // Muestra el primer archivo como ejemplo
+                .into(holder.thumbnail)
+        } else {
+            holder.thumbnail.visibility = View.GONE
         }
     }
 }
