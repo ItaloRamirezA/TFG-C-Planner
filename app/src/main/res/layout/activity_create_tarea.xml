@@ -42,6 +42,8 @@
                     android:layout_height="wrap_content"/>
             </com.google.android.material.textfield.TextInputLayout>
 
+
+
             <!-- Recordatorio -->
             <LinearLayout
                 android:layout_marginTop="16dp"
@@ -88,13 +90,60 @@
             </LinearLayout>
 
             <!-- Círculo de color -->
-
             <View
                 android:id="@+id/viewColorPreview"
                 android:layout_marginTop="16dp"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:background="@drawable/circle_color_preview"/>
+
+            <!-- Switch para activar/desactivar Repetir -->
+            <LinearLayout
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_weight="1"
+                    android:text="Repetir"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switchRepeat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <!-- Contenedor para el Spinner de Repetir -->
+            <LinearLayout
+                android:id="@+id/spinnerRepeatContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone" />
+
+            <TextView
+                android:layout_weight="1"
+                android:text="Usuarios"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <!-- Campo para escribir email y añadir usuario -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Escribir email">
+
+                <AutoCompleteTextView
+                    android:id="@+id/actvSharedEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Multi-día -->
             <LinearLayout
@@ -115,6 +164,20 @@
             </LinearLayout>
 
             <!-- Calendario -->
+            <TextView
+                android:layout_marginTop="16dp"
+                android:text="Fecha"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/tvDatePickerStart"
+                android:layout_marginTop="16dp"
+                android:text="Inicio"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
             <DatePicker
                 android:id="@+id/datePicker"
                 android:layout_width="match_parent"
@@ -123,6 +186,15 @@
                 android:spinnersShown="false"
                 android:layout_marginTop="16dp"/>
 
+
+            <TextView
+                android:id="@+id/tvDatePickerEnd"
+                android:layout_marginTop="16dp"
+                android:text="Final"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
             <!-- Fecha de fin -->
             <DatePicker
                 android:id="@+id/datePickerEnd"
@@ -132,6 +204,14 @@
                 android:spinnersShown="false"
                 android:layout_marginTop="16dp"
                 android:visibility="gone"/>
+
+            <TextView
+                android:layout_marginTop="16dp"
+                android:text="Ubicación"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
 
             <!-- Adjuntar archivo -->
             <Button
@@ -149,19 +229,7 @@
                 android:orientation="vertical"
                 android:layout_marginTop="8dp"/>
 
-            <!-- Campo para escribir email y añadir usuario -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_marginTop="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Compartir con (email)">
 
-                <AutoCompleteTextView
-                    android:id="@+id/actvSharedEmail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"/>
-            </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Chips con los usuarios añadidos -->
             <com.google.android.material.chip.ChipGroup

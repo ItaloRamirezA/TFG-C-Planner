@@ -29,6 +29,8 @@ class CreateTareaActivity : AppCompatActivity() {
     private lateinit var etTitle: TextInputEditText
     private lateinit var switchReminder: SwitchMaterial
     private lateinit var spinnerCategory: Spinner
+    private lateinit var spinnerRepeat: Spinner
+    private lateinit var switchRepeat: SwitchMaterial
     private lateinit var switchMultiDay: SwitchMaterial
     private lateinit var datePickerStart: DatePicker
     private lateinit var datePickerEnd: DatePicker
@@ -60,6 +62,7 @@ class CreateTareaActivity : AppCompatActivity() {
         etTitle = findViewById(R.id.etTitle)
         switchReminder = findViewById(R.id.switchReminder)
         spinnerCategory = findViewById(R.id.spinnerCategory)
+        switchRepeat = findViewById(R.id.switchRepeat)
         val btnAddCategory = findViewById<Button>(R.id.btnAddCategory)
         switchMultiDay = findViewById(R.id.switchMultiDay)
         datePickerStart = findViewById(R.id.datePicker)
@@ -71,6 +74,12 @@ class CreateTareaActivity : AppCompatActivity() {
         chipGroupShared = findViewById(R.id.chipGroupShared)
         llAttachedFiles = findViewById(R.id.llAttachedFiles)
 
+        // Initialize the Spinner for Repeat
+        val spinnerRepeatContainer = findViewById<LinearLayout>(R.id.spinnerRepeatContainer)
+        spinnerRepeat = Spinner(this)
+        spinnerRepeatContainer.addView(spinnerRepeat)
+        spinnerRepeatContainer.visibility = View.GONE // Hide by default
+
         val catAdapter = ArrayAdapter<Categoria>(
             this,
             android.R.layout.simple_spinner_item,
@@ -78,6 +87,17 @@ class CreateTareaActivity : AppCompatActivity() {
         )
         catAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerCategory.adapter = catAdapter
+
+        // Configure options for the Repeat Spinner
+        val repeatOptions = listOf("Diario", "Semanal", "Mensual")
+        val repeatAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, repeatOptions)
+        repeatAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerRepeat.adapter = repeatAdapter
+
+        // Show/hide the Repeat Spinner based on the Switch state
+        switchRepeat.setOnCheckedChangeListener { _, isChecked ->
+            spinnerRepeatContainer.visibility = if (isChecked) View.VISIBLE else View.GONE
+        }
 
         // Observe categories and add "Sin categoría" as the default option
         categoriaVM.listaCategorias.observe(this) { cats ->
@@ -90,7 +110,7 @@ class CreateTareaActivity : AppCompatActivity() {
             catAdapter.addAll(categoriasConOpciones)
             catAdapter.notifyDataSetChanged()
 
-            // Set default selection to "Sin categoría"
+            // Default selection: "Sin categoría"
             spinnerCategory.setSelection(0)
         }
 
@@ -172,6 +192,8 @@ class CreateTareaActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            val repeatOption = if (switchRepeat.isChecked) spinnerRepeat.selectedItem.toString() else "Ninguno"
+
             val tarea = Tarea(
                 titulo = title,
                 reminder = switchReminder.isChecked,
@@ -181,7 +203,8 @@ class CreateTareaActivity : AppCompatActivity() {
                 startDate = startDate,
                 endDate = endDate,
                 attachments = fileUrisToAttach.map { it.toString() },
-                sharedWith = sharedWithIds.toList()
+                sharedWith = sharedWithIds.toList(),
+                repeat = repeatOption // Save the selected Repeat option
             )
 
             tareaVM.addTarea(tarea)
