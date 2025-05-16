@@ -8,6 +8,7 @@ import com.app.cplanner.activities.UserProfileActivity
 import com.app.cplanner.fragments.CategoriaDialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import androidx.activity.viewModels
+import com.app.cplanner.activities.ListaListActivity
 import com.app.cplanner.activities.TareasListActivity
 import com.app.cplanner.activities.TrashActivity
 import com.app.cplanner.model.viewModel.CategoriaViewModel
@@ -68,6 +69,10 @@ class MainActivity : BaseActivity() {
         startActivity(intent)
     }
 
+    fun goToListasList(view: View) {
+        val intent = Intent(this, ListaListActivity::class.java)
+        startActivity(intent)
+    }
 
 
 }

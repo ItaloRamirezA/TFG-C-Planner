@@ -3,30 +3,101 @@ package com.app.cplanner.model.viewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.app.cplanner.model.entity.Lista
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class ListaViewModel : ViewModel() {
+    private val auth = FirebaseAuth.getInstance()
+    private val db = FirebaseFirestore.getInstance()
+
     private val _listas = MutableLiveData<List<Lista>>(emptyList())
     val listas: LiveData<List<Lista>> get() = _listas
 
+    init {
+        cargarListas()
+    }
+
+    fun cargarListas() {
+        val userId = auth.currentUser?.uid ?: return
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val snapshot = db.collection("usuarios")
+                    .document(userId)
+                    .collection("listas")
+                    .get()
+                    .await()
+                val listas = snapshot.documents.mapNotNull { it.toObject(Lista::class.java) }
+                _listas.postValue(listas)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
     fun addLista(lista: Lista) {
-        val currentListas = _listas.value?.toMutableList() ?: mutableListOf()
-        currentListas.add(lista)
-        _listas.value = currentListas
+        val userId = auth.currentUser?.uid ?: return
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val listaId = db.collection("usuarios")
+                    .document(userId)
+                    .collection("listas")
+                    .document().id
+                val nuevaLista = lista.copy(id = listaId)
+
+                db.collection("usuarios")
+                    .document(userId)
+                    .collection("listas")
+                    .document(listaId)
+                    .set(nuevaLista)
+                    .await()
+
+                _listas.postValue(_listas.value.orEmpty() + nuevaLista)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 
     fun updateLista(updatedLista: Lista) {
-        val currentListas = _listas.value?.toMutableList() ?: mutableListOf()
-        val index = currentListas.indexOfFirst { it.id == updatedLista.id }
-        if (index != -1) {
-            currentListas[index] = updatedLista
-            _listas.value = currentListas
+        val userId = auth.currentUser?.uid ?: return
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                db.collection("usuarios")
+                    .document(userId)
+                    .collection("listas")
+                    .document(updatedLista.id)
+                    .set(updatedLista)
+                    .await()
+
+                _listas.postValue(
+                    _listas.value.orEmpty().map { if (it.id == updatedLista.id) updatedLista else it }
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
     fun deleteLista(listaId: String) {
-        val currentListas = _listas.value?.toMutableList() ?: mutableListOf()
-        currentListas.removeAll { it.id == listaId }
-        _listas.value = currentListas
+        val userId = auth.currentUser?.uid ?: return
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                db.collection("usuarios")
+                    .document(userId)
+                    .collection("listas")
+                    .document(listaId)
+                    .delete()
+                    .await()
+
+                _listas.postValue(_listas.value.orEmpty().filter { it.id != listaId })
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 }

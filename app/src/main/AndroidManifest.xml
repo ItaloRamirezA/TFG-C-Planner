@@ -6,12 +6,9 @@
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32"
         tools:ignore="ManifestOrder" />
-
-    <uses-permission
-        android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
-        android:windowSoftInputMode="adjustPan"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -21,7 +18,11 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/Theme.C_Planner"
+        android:windowSoftInputMode="adjustPan"
         tools:targetApi="31">
+        <activity
+            android:name=".activities.ListaListActivity"
+            android:exported="false" />
         <activity
             android:name=".activities.TrashActivity"
             android:exported="false" />
@@ -61,7 +62,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>
