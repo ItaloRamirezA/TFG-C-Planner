@@ -15,7 +15,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:navigationIcon="?attr/homeAsUpIndicator" />
+            app:navigationIcon="?attr/homeAsUpIndicator"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -95,6 +95,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:layout_gravity="center"
                 android:background="@drawable/circle_color_preview"/>
 
             <!-- Switch para activar/desactivar Repetir -->
@@ -136,7 +137,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Escribir email">
+                android:hint="Escribir email del usuario">
 
                 <AutoCompleteTextView
                     android:id="@+id/actvSharedEmail"
@@ -154,7 +155,7 @@
                 android:orientation="horizontal">
                 <TextView
                     android:layout_weight="1"
-                    android:text="Multi-día"
+                    android:text="Varios días"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"/>
                 <com.google.android.material.switchmaterial.SwitchMaterial

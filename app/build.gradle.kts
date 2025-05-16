@@ -43,6 +43,7 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore-ktx")
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-storage-ktx")
+    implementation("com.google.firebase:firebase-messaging")
 
     // Google Play Services
     implementation("com.google.android.gms:play-services-safetynet:18.0.0")
@@ -71,31 +72,4 @@ dependencies {
     // Para el color wheel (circulo de colores)
     implementation("com.github.yukuku:ambilwarna:2.0.1")
 
-
-    implementation("com.github.yukuku:ambilwarna:2.0.1")
 }
-//    implementation("androidx.core:core-ktx:1.9.0")
-//    implementation("androidx.appcompat:appcompat:1.6.1")
-//    implementation("com.google.android.material:material:1.11.0")
-//    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-//    implementation(libs.androidx.activity)
-//    implementation(libs.firebase.storage.ktx)
-//    testImplementation("junit:junit:4.13.2")
-//    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-//    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-//
-//    // Firebase
-//    implementation("com.google.firebase:firebase-firestore-ktx:24.8.1")
-//
-//    // Firebase BoM
-//    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
-//    implementation("com.google.firebase:firebase-auth")
-//
-//    //AUTH Firebase
-//    implementation ("com.google.firebase:firebase-auth:21.0.1")
-//    implementation ("com.google.android.gms:play-services-safetynet:18.0.0")
-//
-//    // AUTH Google
-//    implementation("com.google.android.gms:play-services-auth:20.7.0")
-//
-//    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
