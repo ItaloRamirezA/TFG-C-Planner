@@ -1,14 +1,19 @@
 package com.app.cplanner.activities
 
+import android.Manifest
 import android.content.Intent
-import android.graphics.drawable.GradientDrawable
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.app.cplanner.R
@@ -17,12 +22,14 @@ import com.app.cplanner.model.entity.Categoria
 import com.app.cplanner.model.entity.Tarea
 import com.app.cplanner.model.viewModel.CategoriaViewModel
 import com.app.cplanner.model.viewModel.TareaViewModel
+import com.app.cplanner.session.LocalNotification
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.firestore.FirebaseFirestore
 import yuku.ambilwarna.AmbilWarnaDialog
+import java.util.Calendar
 
 class CreateTareaActivity : AppCompatActivity() {
 
@@ -41,6 +48,7 @@ class CreateTareaActivity : AppCompatActivity() {
     private lateinit var chipGroupShared: ChipGroup
     private lateinit var llAttachedFiles: LinearLayout
     private lateinit var btnAddCategory: Button
+    private lateinit var timePicker: TimePicker
 
     private val sharedWithIds = mutableListOf<String>()
 
@@ -76,138 +84,43 @@ class CreateTareaActivity : AppCompatActivity() {
         actvSharedEmail = findViewById(R.id.actvSharedEmail)
         chipGroupShared = findViewById(R.id.chipGroupShared)
         llAttachedFiles = findViewById(R.id.llAttachedFiles)
+        timePicker = findViewById(R.id.timePicker)
+        timePicker.setIs24HourView(true)
 
-        // Inicializamos todas caracteristicas para la creación de tareas
-        initializeTitle()
-        initializeReminder()
+        // Inicializamos todas características para la creación de tareas
         initializeCategory(btnAddCategory)
         initializeRepeat()
         initializeMultiDay()
         initializeSharedUsers()
+        initializeColorPicker()
         initializeFileAttachment()
         initializeSaveButton()
-    }
 
+        checkPermission()
+    }
 
     companion object {
         private const val REQUEST_CODE_PICK_FILES = 1002
+        private const val NOTIFICATION_PERMISSION_REQUEST_CODE = 1
     }
 
-
-    private fun initializeTitle() {
-        // Logic for title initialization
-    }
-
-    /** TODO
-     * Si esta activado y tiene una fecha, creará una notificación
-     * push para la tarea a la fecha de inicio.
-     */
-    private fun initializeReminder() {
-        // Logic for reminder initialization
-    }
-
-    /**
-     * Inicializa el selector de categoría para la tarea.
-     *
-     * Este método configura un "Spinner" para mostrar una lista de categorías disponibles.
-     * Observa los cambios en la lista de categorías desde el "CategoriaViewModel" y actualiza
-     * el adaptador del "Spinner" en consecuencia. También permite al usuario agregar una nueva
-     * categoría mediante un botón que abre un diálogo de creación de categoría.
-     *
-     * @param btnAddCategory Botón que permite agregar una nueva categoría.
-     */
-    private fun initializeCategory(btnAddCategory: Button) {
-        // Configura el adaptador para el Spinner de categorías
-        val catAdapter = ArrayAdapter<Categoria>(
-            this,
-            android.R.layout.simple_spinner_item,
-            mutableListOf()
-        )
-        catAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerCategory.adapter = catAdapter
-
-        // Observa los cambios en la lista de categorías y actualiza el Spinner
-        categoriaVM.listaCategorias.observe(this) { cats ->
-            val categoriasConOpciones = mutableListOf(
-                Categoria(id = "none", nombre = "Sin categoría", color = "#FFFFFF")
-            ).apply {
-                addAll(cats) // Agrega las categorías obtenidas del ViewModel
+    private fun checkPermission() {
+        switchReminder.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    if (ContextCompat.checkSelfPermission(
+                            this,
+                            Manifest.permission.POST_NOTIFICATIONS
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
+                        ActivityCompat.requestPermissions(
+                            this,
+                            arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                            NOTIFICATION_PERMISSION_REQUEST_CODE
+                        )
+                    }
+                }
             }
-            catAdapter.clear()
-            catAdapter.addAll(categoriasConOpciones)
-            catAdapter.notifyDataSetChanged()
-            spinnerCategory.setSelection(0) // Selecciona la opción predeterminada
-        }
-
-        // Configura el botón para agregar una nueva categoría
-        btnAddCategory.setOnClickListener {
-            CategoriaDialogFragment { nuevaCat ->
-                categoriaVM.addCategoria(nuevaCat)
-                Toast.makeText(this, "Categoría creada: ${nuevaCat.nombre}", Toast.LENGTH_SHORT).show()
-            }.show(supportFragmentManager, "CreateCategoryFragment")
-        }
-    }
-
-    /**
-     * Inicializa la funcionalidad de repetición de la tarea.
-     *
-     * Este método configura un "Spinner" que permite seleccionar una opción de repetición
-     * (Diario, Semanal o Mensual). El "Spinner" está contenido en un "LinearLayout" que
-     * inicialmente está oculto. Cuando el usuario activa el interruptor de repetición
-     * ("switchRepeat"), el contenedor del "Spinner" se hace visible, y cuando lo desactiva,
-     * el contenedor se oculta nuevamente.
-     */
-    private fun initializeRepeat() {
-        // Obtiene el contenedor del Spinner y lo oculta inicialmente
-        val spinnerRepeatContainer = findViewById<LinearLayout>(R.id.spinnerRepeatContainer)
-        spinnerRepeat = Spinner(this)
-        spinnerRepeatContainer.addView(spinnerRepeat)
-        spinnerRepeatContainer.visibility = View.GONE
-
-        // Configura las opciones de repetición para el Spinner
-        val repeatOptions = listOf("Diario", "Semanal", "Mensual")
-        val repeatAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, repeatOptions)
-        repeatAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerRepeat.adapter = repeatAdapter
-
-        // Muestra u oculta el contenedor del Spinner según el estado del interruptor
-        switchRepeat.setOnCheckedChangeListener { _, isChecked ->
-            spinnerRepeatContainer.visibility = if (isChecked) View.VISIBLE else View.GONE
-        }
-    }
-
-    /** TODO
-     * Inicializa la funcionalidad de selección de múltiples días para la tarea.
-     *
-     * Este método controla la visibilidad del selector de fecha de finalización ("datePickerEnd").
-     * Si el usuario activa el interruptor de múltiples días ("switchMultiDay"), el selector de
-     * fecha de finalización se muestra, permitiendo elegir una fecha de fin. Si el interruptor
-     * está desactivado, el selector de fecha de finalización se oculta.
-     */
-    private fun initializeMultiDay() {
-        switchMultiDay.setOnCheckedChangeListener { _, isChecked ->
-            datePickerEnd.visibility = if (isChecked) View.VISIBLE else View.GONE
-        }
-    }
-
-    private fun initializeSharedUsers() {
-        actvSharedEmail.setOnEditorActionListener { _, _, _ ->
-            val email = actvSharedEmail.text.toString().trim()
-            if (email.isNotEmpty()) {
-                addUserByEmail(email)
-            }
-            true
-        }
-    }
-
-    private fun initializeFileAttachment() {
-        btnAttachFile.setOnClickListener {
-            val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
-                type = "*/*"
-                putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-                addCategory(Intent.CATEGORY_OPENABLE)
-            }
-            startActivityForResult(Intent.createChooser(intent, "Selecciona archivos"), REQUEST_CODE_PICK_FILES)
         }
     }
 
@@ -215,7 +128,7 @@ class CreateTareaActivity : AppCompatActivity() {
         btnSave.setOnClickListener {
             val title = etTitle.text.toString().trim()
             if (title.isEmpty()) {
-                Toast.makeText(this, "Título vacío", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "El título no puede estar vacío", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -248,6 +161,39 @@ class CreateTareaActivity : AppCompatActivity() {
 
             val repeatOption = if (switchRepeat.isChecked) spinnerRepeat.selectedItem.toString() else "Ninguno"
 
+            // Validar y crear la notificación si el switch está activado
+            if (switchReminder.isChecked) {
+                val currentDate = Calendar.getInstance()
+                val selectedDate = Calendar.getInstance().apply {
+                    set(
+                        datePickerStart.year,
+                        datePickerStart.month,
+                        datePickerStart.dayOfMonth,
+                        timePicker.hour,
+                        timePicker.minute,
+                        0
+                    )
+                }
+
+                if (selectedDate.timeInMillis <= currentDate.timeInMillis) {
+                    Toast.makeText(this, "La fecha y hora deben ser futuras", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                // Crear la notificación
+                val localNotification = LocalNotification(this)
+                localNotification.programarNotificacion(
+                    titulo = title,
+                    texto = "Recordatorio de la tarea: $title",
+                    imagen = 0,
+                    anio = datePickerStart.year,
+                    mes = datePickerStart.month + 1,
+                    dia = datePickerStart.dayOfMonth,
+                    hora = timePicker.hour,
+                    minuto = timePicker.minute
+                )
+            }
+
             val tarea = Tarea(
                 titulo = title,
                 reminder = switchReminder.isChecked,
@@ -264,6 +210,94 @@ class CreateTareaActivity : AppCompatActivity() {
             tareaVM.addTarea(tarea)
             Toast.makeText(this, "Tarea guardada", Toast.LENGTH_SHORT).show()
             finish()
+        }
+    }
+
+    private fun initializeColorPicker() {
+        viewColorPreview.setOnClickListener {
+            val colorPicker = AmbilWarnaDialog(this, selectedColor, object : AmbilWarnaDialog.OnAmbilWarnaListener {
+                override fun onOk(dialog: AmbilWarnaDialog?, color: Int) {
+                    selectedColor = color
+                    viewColorPreview.setBackgroundColor(selectedColor)
+                }
+
+                override fun onCancel(dialog: AmbilWarnaDialog?) {
+                    // No hacer nada si se cancela
+                }
+            })
+            colorPicker.show()
+        }
+    }
+
+    private fun initializeCategory(btnAddCategory: Button) {
+        val catAdapter = ArrayAdapter<Categoria>(
+            this,
+            android.R.layout.simple_spinner_item,
+            mutableListOf()
+        )
+        catAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerCategory.adapter = catAdapter
+
+        categoriaVM.listaCategorias.observe(this) { cats ->
+            val categoriasConOpciones = mutableListOf(
+                Categoria(id = "none", nombre = "Sin categoría", color = "#FFFFFF")
+            ).apply {
+                addAll(cats)
+            }
+            catAdapter.clear()
+            catAdapter.addAll(categoriasConOpciones)
+            catAdapter.notifyDataSetChanged()
+            spinnerCategory.setSelection(0)
+        }
+
+        btnAddCategory.setOnClickListener {
+            CategoriaDialogFragment { nuevaCat ->
+                categoriaVM.addCategoria(nuevaCat)
+                Toast.makeText(this, "Categoría creada: ${nuevaCat.nombre}", Toast.LENGTH_SHORT).show()
+            }.show(supportFragmentManager, "CreateCategoryFragment")
+        }
+    }
+
+    private fun initializeRepeat() {
+        val spinnerRepeatContainer = findViewById<LinearLayout>(R.id.spinnerRepeatContainer)
+        spinnerRepeat = Spinner(this)
+        spinnerRepeatContainer.addView(spinnerRepeat)
+        spinnerRepeatContainer.visibility = View.GONE
+
+        val repeatOptions = listOf("Diario", "Semanal", "Mensual")
+        val repeatAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, repeatOptions)
+        repeatAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerRepeat.adapter = repeatAdapter
+
+        switchRepeat.setOnCheckedChangeListener { _, isChecked ->
+            spinnerRepeatContainer.visibility = if (isChecked) View.VISIBLE else View.GONE
+        }
+    }
+
+    private fun initializeMultiDay() {
+        switchMultiDay.setOnCheckedChangeListener { _, isChecked ->
+            datePickerEnd.visibility = if (isChecked) View.VISIBLE else View.GONE
+        }
+    }
+
+    private fun initializeSharedUsers() {
+        actvSharedEmail.setOnEditorActionListener { _, _, _ ->
+            val email = actvSharedEmail.text.toString().trim()
+            if (email.isNotEmpty()) {
+                addUserByEmail(email)
+            }
+            true
+        }
+    }
+
+    private fun initializeFileAttachment() {
+        btnAttachFile.setOnClickListener {
+            val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+                type = "*/*"
+                putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+                addCategory(Intent.CATEGORY_OPENABLE)
+            }
+            startActivityForResult(Intent.createChooser(intent, "Selecciona archivos"), REQUEST_CODE_PICK_FILES)
         }
     }
 
@@ -284,10 +318,6 @@ class CreateTareaActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Busca un usuario por su email en la base de datos
-     * y si existe lo agrega a la lista de usuarios compartidos.
-     */
     private fun addUserByEmail(email: String) {
         val db = FirebaseFirestore.getInstance()
         db.collection("usuarios")
@@ -313,10 +343,6 @@ class CreateTareaActivity : AppCompatActivity() {
             }
     }
 
-    /**
-     * Agrega un chip(pestañita) para los usuarios
-     * a los que se compartira la tarea.
-     */
     private fun addUserChip(userName: String, userId: String) {
         val chip = Chip(this).apply {
             text = userName
@@ -329,9 +355,6 @@ class CreateTareaActivity : AppCompatActivity() {
         chipGroupShared.addView(chip)
     }
 
-    /**
-     * Agrega los archivos adjuntos a la vista.
-     */
     private fun addFileToView(uri: Uri) {
         val textView = TextView(this).apply {
             text = uri.lastPathSegment
@@ -339,5 +362,17 @@ class CreateTareaActivity : AppCompatActivity() {
             setPadding(8, 8, 8, 8)
         }
         llAttachedFiles.addView(textView)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == NOTIFICATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Permiso de notificaciones concedido", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Permiso de notificaciones denegado", Toast.LENGTH_SHORT).show()
+                switchReminder.isChecked = false // Desactiva el switch si se deniega el permiso
+            }
+        }
     }
 }

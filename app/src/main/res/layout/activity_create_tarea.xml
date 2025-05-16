@@ -62,6 +62,21 @@
                     android:layout_height="wrap_content"/>
             </LinearLayout>
 
+            <!-- Selector de hora -->
+            <TextView
+                android:id="@+id/tvTimePicker"
+                android:layout_marginTop="16dp"
+                android:text="Hora"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TimePicker
+                android:id="@+id/timePicker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:timePickerMode="spinner"
+                android:layout_marginTop="16dp"/>
+
             <!-- Categoría -->
             <TextView
                 android:layout_marginTop="16dp"
