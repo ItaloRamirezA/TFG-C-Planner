@@ -7,21 +7,24 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/btnAddCategory"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="176dp"
+        android:onClick="goToCreateCategory"
+        android:text="Agregar categoria"
+        android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnSignOut"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="12dp"
         android:onClick="signOutBoton"
         android:text="Sign Out"
         android:textSize="22sp"
@@ -32,8 +35,8 @@
         android:id="@+id/btnCreateActivity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="68dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="64dp"
         android:onClick="createActivityBoton"
         android:text="Create Activity"
         android:textSize="22sp"
@@ -44,34 +47,10 @@
         android:id="@+id/btnProfile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="128dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="124dp"
+        android:onClick="goToProfile"
         android:text="Ir al perfil"
-        android:textSize="22sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:onClick="goToProfile"/>
-
-    <Button
-        android:id="@+id/btnAddCategory"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="180dp"
-        android:onClick="goToCreateCategory"
-        android:text="Agregar categoria"
-        android:textSize="22sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/btnSeeTareas"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="236dp"
-        android:onClick="goToTareasList"
-        android:text="Ver tareas"
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -80,8 +59,8 @@
         android:id="@+id/btnSeePapelera"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="292dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="288dp"
         android:onClick="goToTrashList"
         android:text="papelera"
         android:textSize="22sp"
@@ -92,10 +71,22 @@
         android:id="@+id/btnVerListas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="344dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="340dp"
         android:onClick="goToListasList"
-        android:text="Ver lsitas"
+        android:text="Ver Listas"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnSeeTareas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="232dp"
+        android:onClick="goToTareasList"
+        android:text="Ver tareas"
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

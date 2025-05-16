@@ -51,7 +51,7 @@ class TareasListActivity : AppCompatActivity() {
             swipeRefreshLayout.isRefreshing = false
         }
 
-        // 1) Configurar RecyclerView y LayoutManager
+        // Configurar RecyclerView y LayoutManager
         rvTasks = findViewById(R.id.rvTasks)
         rvTasks.layoutManager = LinearLayoutManager(this)
 

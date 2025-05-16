@@ -29,7 +29,7 @@ class ListaListActivity : AppCompatActivity() {
             populateLinearLayoutListas(listas, linearLayoutListas, linearLayoutElementos)
         }
 
-        // Add new list
+        // Agrega neuva Lista
         btnAddLista.setOnClickListener {
             CreateListaFragment { nuevaLista ->
                 listaViewModel.addLista(nuevaLista)
@@ -42,7 +42,7 @@ class ListaListActivity : AppCompatActivity() {
         linearLayoutListas: LinearLayout,
         linearLayoutElementos: LinearLayout
     ) {
-        linearLayoutListas.removeAllViews() // Clear existing views
+        linearLayoutListas.removeAllViews() // Limpia vistas existentes
         for (lista in listas) {
             val button = Button(this).apply {
                 text = lista.nombre
