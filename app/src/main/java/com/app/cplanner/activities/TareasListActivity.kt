@@ -72,19 +72,19 @@ class TareasListActivity : AppCompatActivity() {
             }
         }
 
-        // 2) Observar lista de tareas
+        // Observar lista de tareas
         tareaVM.listaTareas.observe(this) { list ->
             latestTasks = list
             trySetAdapter()
         }
 
-        // 3) Observar mapa id→nombre de categorías
+        // Observar mapa id→nombre de categorías
         categoriaVM.categoriesMap.observe(this) { map ->
             latestCatMap = map
             trySetAdapter()
         }
 
-        // 4) Disparar lectura inicial
+        // Disparar lectura inicial
         categoriaVM.cargarCategorias()
         tareaVM.cargarTareas()
     }

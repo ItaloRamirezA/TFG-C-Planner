@@ -24,7 +24,7 @@
     <ImageView
         android:layout_width="350dp"
         android:layout_height="350dp"
-        android:src="@drawable/temporal"
+        android:src="@mipmap/logo_cplanner_foreground"
         app:layout_constraintBottom_toTopOf="@+id/cvGetStarted"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,7 +55,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="10dp"
                 android:gravity="center"
-                android:text="Get Started"
+                android:text="Empecemos"
                 android:textColor="@color/white"
                 android:textSize="26sp"
                 android:textStyle="bold" />
@@ -63,7 +63,7 @@
             <ImageView
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:src="@drawable/temporal" />
+                android:src="@drawable/ambilwarna_arrow_right" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

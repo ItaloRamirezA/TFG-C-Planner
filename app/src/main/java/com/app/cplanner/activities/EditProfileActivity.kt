@@ -36,14 +36,14 @@ class EditProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
 
-        // 1) Vinculamos las vistas
+        // Vinculamos las vistas
         etNombre = findViewById(R.id.etEditName)
         etEmail = findViewById(R.id.etEditEmail)
         imgFoto = findViewById(R.id.ivEditPhoto)
         btnCambiarFoto = findViewById(R.id.btnPickPhoto)
         btnGuardar = findViewById(R.id.btnSaveProfile)
 
-        // 2) Observamos el LiveData<Usuario> para poblar UI
+        // Observamos el LiveData<Usuario> para poblar UI
         usuarioViewModel.usuario.observe(this) { usuario ->
             usuario?.let {
                 etNombre.setText(it.nombre)
@@ -62,7 +62,7 @@ class EditProfileActivity : AppCompatActivity() {
             }
         }
 
-        // 3) Selector de foto desde galería
+        // Selector de foto desde galería
         btnCambiarFoto.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK).apply {
                 type = "image/*"
@@ -70,7 +70,7 @@ class EditProfileActivity : AppCompatActivity() {
             startActivityForResult(intent, PICK_IMAGE)
         }
 
-        // 4) Guardar cambios (nombre, email y foto)
+        // Guardar cambios (nombre, email y foto)
         btnGuardar.setOnClickListener {
             val nombre = etNombre.text.toString().trim()
             val email  = etEmail.text.toString().trim()
@@ -86,7 +86,7 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
-    // 5) Recibimos la URI de la imagen seleccionada
+    // Recibimos la URI de la imagen seleccionada
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 

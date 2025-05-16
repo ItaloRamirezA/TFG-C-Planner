@@ -19,17 +19,15 @@ class ListaListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lista_list)
 
-        // Find views
         val btnAddLista = findViewById<Button>(R.id.btnAddLista)
         val linearLayoutListas = findViewById<LinearLayout>(R.id.linearLayoutListas)
         val linearLayoutElementos = findViewById<LinearLayout>(R.id.linearLayoutElementos)
 
-        // Observe lists from ViewModel
         listaViewModel.listas.observe(this) { listas ->
             populateLinearLayoutListas(listas, linearLayoutListas, linearLayoutElementos)
         }
 
-        // Agrega neuva Lista
+        // Agrega nueva Lista
         btnAddLista.setOnClickListener {
             CreateListaFragment { nuevaLista ->
                 listaViewModel.addLista(nuevaLista)
@@ -47,7 +45,6 @@ class ListaListActivity : AppCompatActivity() {
             val button = Button(this).apply {
                 text = lista.nombre
                 setOnClickListener {
-                    // Show elements of the selected list
                     linearLayoutElementos.removeAllViews()
                     for (elemento in lista.elementos) {
                         val textView = TextView(this@ListaListActivity).apply {

@@ -11,7 +11,7 @@
         android:id="@+id/ivSinUpLogo"
         android:layout_width="350dp"
         android:layout_height="280dp"
-        android:src="@drawable/temporal"
+        android:src="@mipmap/logo_cplanner_foreground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -50,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
-            android:hint="Name"
+            android:hint="Nombre"
             android:textSize="@dimen/et_text_size"
             />
     </com.google.android.material.textfield.TextInputLayout>
@@ -76,7 +76,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
-            android:hint="Email ID"
+            android:hint="Email"
             android:textSize="@dimen/et_text_size"
             />
     </com.google.android.material.textfield.TextInputLayout>
@@ -104,7 +104,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:hint="Password"
+            android:hint="Contraseña"
             android:textSize="@dimen/et_text_size"
             />
     </com.google.android.material.textfield.TextInputLayout>
@@ -116,7 +116,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:background="@drawable/button_background"
-        android:text="Sign Up"
+        android:text="ENTRAR"
         android:layout_marginTop="20dp"
         android:textColor="@color/white"
         android:textSize="22sp"
@@ -139,7 +139,7 @@
             android:id="@+id/tvNewHere"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Joined us before?"
+            android:text="Ya tienes cuenta?"
             android:textSize="18sp"
             />
 
@@ -147,7 +147,7 @@
             android:id="@+id/tvLoginPage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" Login"
+            android:text=" Inicia sesión"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@color/azulOscuro"
